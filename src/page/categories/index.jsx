@@ -5,7 +5,7 @@ function Categories() {
   const [categories, setCategories] = React.useState([]);
 
   function fetchCategories() {
-    fetch('http://localhost/fnf_api/category/index.php')
+    fetch('http://localhost/pharmacy_api/category/index.php')
       .then(response => response.json())
       .then(data => setCategories(data.data))
       .catch(error => console.error('Error fetching categories:', error));
@@ -17,7 +17,7 @@ function Categories() {
 
   function handleDelete(id) {
     if (window.confirm('Are you sure you want to delete this category?')) {
-      fetch(`http://localhost/fnf_api/category/delete.php?id=${id}`, {
+      fetch(`http://localhost/pharmacy_api/category/delete.php?id=${id}`, {
         method: 'DELETE',
       })
         .then(response => response.json())

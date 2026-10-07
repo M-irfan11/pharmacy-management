@@ -7,7 +7,7 @@ function CategoryCreate() {
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
     
-    fetch('http://localhost/fnf_api/category/create.php', {
+    fetch('http://localhost/pharmacy_api/category/create.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

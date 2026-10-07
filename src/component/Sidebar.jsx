@@ -23,7 +23,7 @@ function Sidebar() {
                             <Link to="/Categories"><i className="fa fa-calendar-check-o"></i> <span>Categories</span></Link>
                         </li>
                         <li>
-                            <a href="departments.html"><i className="fa fa-hospital-o"></i> <span>Departments</span></a>
+                            <Link to="/Supplier"><i className="fa fa-hospital-o"></i> <span>Supplier</span></Link>
                         </li>
                         <li className="submenu">
                             <a href="#"><i className="fa fa-user"></i> <span> Employees </span> <span className="menu-arrow"></span></a>

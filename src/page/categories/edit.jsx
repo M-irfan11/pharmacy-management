@@ -7,7 +7,7 @@ function CategoryEdit() {
   const [category, setCategory] = React.useState({});
 
   function fetchCategory() {
-    fetch('http://localhost/fnf_api/category/single.php?id=' + id)
+    fetch('http://localhost/pharmacy_api/category/single.php?id=' + id)
       .then(response => response.json())
       .then(data => setCategory(data.data[0]))
       .catch(error => console.error('Error fetching category:', error));
