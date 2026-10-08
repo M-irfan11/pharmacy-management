@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import Layout from "../Layout.jsx";
 function SupplierCreate() {
 
     function handleSubmit(e) {
@@ -27,6 +28,7 @@ function SupplierCreate() {
 
 
     return (
+        <Layout>
         <div className="page-wrapper">
             <div className="main-wrapper">
                 <div className="page-wrapper">
@@ -97,6 +99,7 @@ function SupplierCreate() {
                 </div>
             </div>
         </div>
+        </Layout>
     );
 }
 

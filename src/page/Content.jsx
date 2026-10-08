@@ -1,5 +1,8 @@
+import Layout from './Layout.jsx'
+
 function Content() {
     return(
+        <Layout>
 
         <div className="content">
             <div className="row">
@@ -377,6 +380,7 @@ function Content() {
                 </div>
             </div>
         </div>
+        </Layout>
 
     )
 }

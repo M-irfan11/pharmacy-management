@@ -1,7 +1,9 @@
 import { Link } from "react-router"
+import Layout from './Layout.jsx'
 
 function Doctors(){
     return(
+        <Layout>
         <div class="page-wrapper">
         <div className="main-wrapper">
             
@@ -479,6 +481,7 @@ function Doctors(){
             </div>
         </div>
         </div>
+    </Layout>
     )
 }
 

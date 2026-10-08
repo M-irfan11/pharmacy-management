@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link, useParams } from 'react-router';
 
+import Layout from "../Layout.jsx";
+
 function CategoryEdit() {
   const { id } = useParams();
 
@@ -40,7 +42,7 @@ function CategoryEdit() {
   }
 
   return (
-    <div className="main-wrapper">
+    <Layout>
       <div className="page-wrapper">
         <div className="content">
 
@@ -94,10 +96,11 @@ function CategoryEdit() {
               </form>
             </div>
           </div>
+          </div>
 
         </div>
-      </div>
-    </div>
+    
+    </Layout>
   );
 }
 
