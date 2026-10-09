@@ -7,7 +7,7 @@ function CategoryCreate() {
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
     
-    fetch('http://localhost/pharmacy_api/category/create.php', {
+    fetch('http://localhost/pharmacy_api/categories/create.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -67,12 +67,12 @@ function CategoryCreate() {
                   <div className="card-body">
                     <form onSubmit={handleSubmit}>
                       <div className="form-group">
-                        <label htmlFor="categoryName">Category Name</label>
-                        <input type="text" name="name" className="form-control" id="categoryName" placeholder="Enter category name" />
+                        <label htmlFor="categoriesName">Category Name</label>
+                        <input type="text" name="name" className="form-control" id="categoriesName" placeholder="Enter categories name" />
                       </div>
                       <div className="form-group">
-                        <label htmlFor="categoryDescription">Category Description</label>
-                        <input type="text" name="description" className="form-control" id="categoryDescription" placeholder="Enter category description" />
+                        <label htmlFor="categoriesDescription">Category Description</label>
+                        <input type="text" name="description" className="form-control" id="categoriesDescription" placeholder="Enter categories description" />
                       </div>
                       <button type="submit" className="btn btn-primary mt-3">Add Category</button>
                     </form>

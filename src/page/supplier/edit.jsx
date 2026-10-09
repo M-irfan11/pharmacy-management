@@ -68,15 +68,15 @@ function SupplierEdit() {
                                         id="supplier_Name"
                                         className="form-control"
                                         placeholder="Enter supplier name"
-                                        value={supplier.name || ''}
-                                        onChange={(e) => setSupplier({ ...supplier, name: e.target.value })}
+                                        value={supplier.supplier_name || ''}
+                                        onChange={(e) => setSupplier({ ...supplier, supplier_name: e.target.value })}
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="phone_number">phone</label>
+                                    <label htmlFor="phone">phone</label>
                                     <input
                                         type="number"
-                                        name="phone_number"
+                                        name="phone"
                                         id="phone"
                                         className="form-control"
                                         placeholder="Enter phone number"

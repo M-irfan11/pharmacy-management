@@ -5,7 +5,7 @@ function Categories() {
   const [categories, setCategories] = React.useState([]);
 
   function fetchCategories() {
-    fetch('http://localhost/pharmacy_api/category/index.php')
+    fetch('http://localhost/pharmacy_api/categories/index.php')
       .then(response => response.json())
       .then(data => setCategories(data.data))
       .catch(error => console.error('Error fetching categories:', error));
@@ -16,8 +16,8 @@ function Categories() {
   }, []);
 
   function handleDelete(id) {
-    if (window.confirm('Are you sure you want to delete this category?')) {
-      fetch(`http://localhost/pharmacy_api/category/delete.php?id=${id}`, {
+    if (window.confirm('Are you sure you want to delete this categories?')) {
+      fetch(`http://localhost/pharmacy_api/categories/delete.php?id=${id}`, {
         method: 'DELETE',
       })
         .then(response => response.json())
@@ -26,7 +26,7 @@ function Categories() {
             fetchCategories();
           }
         })
-        .catch(error => console.error('Error deleting category:', error));
+        .catch(error => console.error('Error deleting categories:', error));
     }
   }
 
@@ -64,14 +64,14 @@ function Categories() {
                     </tr>
                   </thead>
                   <tbody>
-                    {categories.map((category, index) => (
-                      <tr key={category.id}>
+                    {categories.map((categories, index) => (
+                      <tr key={categories.id}>
                         <td>{index + 1}</td>
-                        <td>{category.name}</td>
-                        <td>{category.description}</td>
+                        <td>{categories.name}</td>
+                        <td>{categories.description}</td>
                         <td className="text-right">
                           <Link
-                            to={`/categories/edit/${category.id}`}
+                            to={`/categories/edit/${categories.id}`}
                             className="btn btn-sm btn-primary mr-1"
                             title="Edit"
                           >
@@ -80,7 +80,7 @@ function Categories() {
                           <button
                             className="btn btn-sm btn-danger"
                             title="Delete"
-                            onClick={() => handleDelete(category.id)}
+                            onClick={() => handleDelete(categories.id)}
                           >
                             <i className="fa fa-trash-o"></i>
                           </button>
