@@ -8,26 +8,26 @@ function Sidebar() {
                     <ul>
                         <li className="menu-title">Main</li>
                         <li className="active">
-                            <Link to="/Dashboard"><i className="fa fa-dashboard"></i> <span>Dashboard</span></Link>
+                            <Link to="/dashboard"><i className="fa fa-dashboard"></i> <span >Dashboard</span></Link>
                         </li>
                         <li>
-                            <Link to="/Doctors"><i className="fa fa-user-md"></i> <span>Doctors</span></Link>
+                            <Link to="/doctors"><i className="fa fa-user-md"></i> <span>Doctors</span></Link>
                         </li>
                         <li>
-                            <Link to="/Patients"><i className="fa fa-wheelchair"></i> <span>Patients</span></Link>
+                            <Link to="/patients"><i className="fa fa-wheelchair"></i> <span>Patients</span></Link>
                         </li>
                         <li>
-                            <Link to="/Appointment"><i className="fa fa-calendar"></i> <span>Appointments</span></Link>
+                            <Link to="/appointment"><i className="fa fa-calendar"></i> <span>Appointments</span></Link>
                         </li>
                         <li>
-                            <Link to="/Categories"><i className="fa fa-calendar-check-o"></i> <span>Categories</span></Link>
+                            <Link to="/categories"><i className="fa fa-calendar-check-o"></i> <span>Categories</span></Link>
                         </li>
                         <li>
-                            <Link to="/Supplier"><i className="fa fa-hospital-o"></i> <span>Supplier</span></Link>
+                            <Link to="/supplier"><i className="fa fa-hospital-o"></i> <span>Supplier</span></Link>
                         </li>
                         <li className="submenu">
                             <a href="#"><i className="fa fa-user"></i> <span> Employees </span> <span className="menu-arrow"></span></a>
-                            <ul style={{ display: 'none' }}>
+                            <ul style={{display: 'none' }}>
                                 <li><a href="employees.html">Employees List</a></li>
                                 <li><a href="leaves.html">Leaves</a></li>
                                 <li><a href="holidays.html">Holidays</a></li>
