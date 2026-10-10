@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import Layout from "../Layout.jsx";
 
 function Supplier() {
     const [supplier, setSupplier] = React.useState([]);
@@ -31,6 +32,7 @@ function Supplier() {
     }
 
     return (
+        <Layout>
         <div className="main-wrapper">
             <div className="page-wrapper">
                 <div className="content">
@@ -103,6 +105,7 @@ function Supplier() {
                 </div>
             </div>
         </div>
+     </Layout>
     );
 }
 

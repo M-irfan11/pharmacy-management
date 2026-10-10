@@ -1,10 +1,10 @@
 import { Link } from "react-router"
+import Layout from './Layout.jsx'
 
 
 function Appointment(){
     return(
-        
-       
+        <Layout>            
         
         <div className="page-wrapper">
             <div className="content">
@@ -301,6 +301,7 @@ function Appointment(){
 				</div>
 			</div>
 		</div>
+    </Layout>
    
  
 

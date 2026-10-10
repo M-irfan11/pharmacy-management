@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from 'react';
 import { Navigate, Outlet } from "react-router";
 import Sidebar from "../component/Sidebar.jsx";
@@ -25,3 +26,27 @@ function Layout({ children }) {
 }
 
 export default Layout;
+=======
+import react from 'react';
+import Header from '../component/Header.jsx'
+import Sidebar from '../component/Sidebar.jsx'
+import Footer from '../component/Footer.jsx'
+
+
+
+function Layout({ children }) {
+
+    return (
+        
+            <div className="main-wrapper">
+                <Header />
+                <Sidebar />                        
+                {children}
+                <Footer />
+            </div>
+       
+    )
+}
+
+export default Layout
+>>>>>>> 03d81f56022da2565aeb1358774daebf7136ba83

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import Layout from "../Layout.jsx";
 function SupplierCreate() {
 
     function handleSubmit(e) {
@@ -27,6 +28,7 @@ function SupplierCreate() {
 
 
     return (
+        <Layout>
         <div className="page-wrapper">
             <div className="main-wrapper">
                 <div className="page-wrapper">
@@ -72,7 +74,7 @@ function SupplierCreate() {
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="phone">phone</label>
-                                                <input type="text" name="phone" className="form-control" id="phone_number" placeholder="Enter phone" />
+                                                <input type="text" name="phone" className="form-control" id="phone" placeholder="Enter phone" />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="email">email</label>
@@ -97,6 +99,7 @@ function SupplierCreate() {
                 </div>
             </div>
         </div>
+        </Layout>
     );
 }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useParams } from 'react-router';
+import Layout from "../Layout.jsx";
 
 function SupplierEdit() {
     const { id } = useParams();
@@ -40,6 +41,7 @@ function SupplierEdit() {
     }
 
     return (
+        <Layout>
         <div className="main-wrapper">
             <div className="page-wrapper">
                 <div className="content">
@@ -64,7 +66,7 @@ function SupplierEdit() {
                                     <label htmlFor="supplier_Name">supplier Name</label>
                                     <input
                                         type="text"
-                                        name="name"
+                                        name="supplier_name"
                                         id="supplier_Name"
                                         className="form-control"
                                         placeholder="Enter supplier name"
@@ -134,6 +136,7 @@ function SupplierEdit() {
                 </div>
             </div>
         </div>
+        </Layout>
     );
 }
 

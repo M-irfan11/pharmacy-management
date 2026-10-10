@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router';
+import Layout from "../Layout.jsx";
 
 function Categories() {
   const [categories, setCategories] = React.useState([]);
 
   function fetchCategories() {
-    fetch('http://localhost/pharmacy_api/categories/index.php')
+    fetch('http://localhost/pharmacy_api/category/index.php')
       .then(response => response.json())
       .then(data => setCategories(data.data))
       .catch(error => console.error('Error fetching categories:', error));
@@ -17,7 +18,7 @@ function Categories() {
 
   function handleDelete(id) {
     if (window.confirm('Are you sure you want to delete this categories?')) {
-      fetch(`http://localhost/pharmacy_api/categories/delete.php?id=${id}`, {
+      fetch(`http://localhost/pharmacy_api/category/delete.php?id=${id}`, {
         method: 'DELETE',
       })
         .then(response => response.json())
@@ -31,7 +32,8 @@ function Categories() {
   }
 
   return (
-    <div className="main-wrapper">
+    <Layout>
+
       <div className="page-wrapper">
         <div className="content">
 
@@ -64,14 +66,14 @@ function Categories() {
                     </tr>
                   </thead>
                   <tbody>
-                    {categories.map((categories, index) => (
-                      <tr key={categories.id}>
+                    {categories.map((category, index) => (
+                      <tr key={category.id}>
                         <td>{index + 1}</td>
-                        <td>{categories.name}</td>
-                        <td>{categories.description}</td>
+                        <td>{category.name}</td>
+                        <td>{category.description}</td>
                         <td className="text-right">
                           <Link
-                            to={`/categories/edit/${categories.id}`}
+                            to={`/categories/edit/${category.id}`}
                             className="btn btn-sm btn-primary mr-1"
                             title="Edit"
                           >
@@ -80,7 +82,7 @@ function Categories() {
                           <button
                             className="btn btn-sm btn-danger"
                             title="Delete"
-                            onClick={() => handleDelete(categories.id)}
+                            onClick={() => handleDelete(category.id)}
                           >
                             <i className="fa fa-trash-o"></i>
                           </button>
@@ -92,10 +94,12 @@ function Categories() {
               </div>
             </div>
           </div>
-
         </div>
+
       </div>
-    </div>
+
+
+    </Layout>
   );
 }
 
