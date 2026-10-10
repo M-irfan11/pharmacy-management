@@ -74,7 +74,7 @@ function Supplier() {
                                             <tr key={supplier.id}>
                                                 <td>{index + 1}</td>
                                                 <td>{supplier.supplier_name}</td>
-                                                <td>{supplier.phone_number}</td>
+                                                <td>{supplier.phone}</td>
                                                 <td>{supplier.email}</td>
                                                 <td>{supplier.address}</td>
                                                 <td>{supplier.description}</td>

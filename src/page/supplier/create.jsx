@@ -73,8 +73,8 @@ function SupplierCreate() {
                                                 <input type="text" name="supplier_name" className="form-control" id="supplier_Name" placeholder="Enter supplier name" />
                                             </div>
                                             <div className="form-group">
-                                                <label htmlFor="phone_number">phone</label>
-                                                <input type="text" name="phone_number" className="form-control" id="phone_number" placeholder="Enter phone" />
+                                                <label htmlFor="phone">phone</label>
+                                                <input type="text" name="phone" className="form-control" id="phone" placeholder="Enter phone" />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="email">email</label>
