@@ -1,45 +1,20 @@
 import React from 'react';
-import { Link, useParams } from 'react-router';
-
 import Layout from "../Layout.jsx";
-
+import { Link } from 'react-router';
+import axios from '../../LIb/axios.js';
 function CategoryEdit() {
-  const { id } = useParams();
 
-  const [category, setCategory] = React.useState({});
 
-  function fetchCategory() {
-    fetch('http://localhost/pharmacy_api/category/single.php?id=' + id)
-      .then(response => response.json())
-      .then(data => setCategory(data.data[0]))
-      .catch(error => console.error('Error fetching category:', error));
-  }
 
-  React.useEffect(() => {
-    fetchCategory();
-  }, []);
-
-  function handleSubmit(e) {
+  // Add / Edit
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
 
-    fetch('http://localhost/fnf_api/category/update.php?id=' + category.id, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
-        window.location.href = '/categories';
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-  }
+    let response = await axios.post('category/edit.php', formData);
+
+    window.location.href = '/categories';
+  };
 
   return (
     <Layout>
@@ -96,10 +71,10 @@ function CategoryEdit() {
               </form>
             </div>
           </div>
-          </div>
-
         </div>
-    
+
+      </div>
+
     </Layout>
   );
 }

@@ -1,30 +1,20 @@
 import React from 'react';
 import Layout from "../Layout.jsx";
 import { Link } from 'react-router';
+import axios from '../../LIb/axios.js';
 function CategoryCreate() {
 
-  function handleSubmit(e) {
+
+
+  // Add / Edit
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
 
-    fetch('http://localhost/pharmacy_api/category/create.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
-        // Optionally, you can redirect the user to another page or show a success message here
-        window.location.href = '/categories';
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  }
+    let response = await axios.post('category/create.php', formData);
+
+    window.location.href = '/categories';
+  };
 
 
   return (

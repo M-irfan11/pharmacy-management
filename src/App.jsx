@@ -1,8 +1,9 @@
-import React from "react";
+import { useState } from "react";
 
 
 import Layout from "./page/Layout.jsx";
 import Login from "./page/Login.jsx";
+import Logout from "./auth/Logout.jsx";
 import Register from "./page/Register.jsx";
 import ForgotPassword from "./page/Forgot-password.jsx";
 import ResetPassword from "./page/ResetPssword.jsx";
@@ -13,8 +14,8 @@ import Doctors from "./page/Doctors.jsx";
 import Patients from "./page/Patients.jsx";
 import Appointment from "./page/Appointment.jsx";
 
-import Categories from "./page/categories/Index.jsx";
-import CategoryCreate from "./page/categories/Create.jsx";
+import Categories from "./page/categories/index.jsx";
+import CategoryCreate from "./page/categories/create.jsx";
 import CategoryEdit from "./page/categories/Edit.jsx";
 
 
@@ -27,14 +28,21 @@ import SupplierEdit from "./page/supplier/edit.jsx";
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router'
 
 function App() {
+  const [isSignedIn, setIsSignedIn] = useState(() => {
+    /* if you want, user will be logged in until they logout*/
+    return localStorage.getItem("access_token") || false;
+    /* if you want, user will be logged when they close the browser*/
+    //return sessionStorage.getItem("access_token") || false;
+  });
   return (
     <BrowserRouter>
 
-      
+
       <Routes>
         {/* Header/Sidebar ছাড়া */}
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
@@ -62,7 +70,7 @@ function App() {
           <Route path="*" element={<div style={{ padding: 20 }}>Page not found</div>} />
         </Route>
       </Routes>
- 
+
 
 
       <Routes>
