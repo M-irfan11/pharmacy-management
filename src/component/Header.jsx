@@ -80,7 +80,7 @@ function Header() {
                             <img className="rounded-circle" src="assets/img/user.jpg" width="24" alt="Admin" />
                             <span className= "status online"></span>
                         </span>
-                        <span onClick={toggleProfile}>Admin</span>
+                        <span onClick={toggleProfile} style={{ border: "none", borderRadius: "20px", padding: "7px 16px", fontSize: "15px", fontWeight: "500", cursor: "pointer", }}>Admin</span>
                     </a>
                     <div className="dropdown-menu">
                         <a className="dropdown-item" href="profile.html">My Profile</a>
