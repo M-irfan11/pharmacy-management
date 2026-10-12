@@ -1,4 +1,12 @@
+import { Link } from "react-router";
+import { useState } from "react";
+
 function Header() {
+    const [openProfile, setOpenProfile] = useState(false);
+
+    const toggleProfile = () => {
+        setOpenProfile(!openProfile);
+    };
 
     return (
 
@@ -54,28 +62,8 @@ function Header() {
                                         </div>
                                     </a>
                                 </li>
-                                <li className="notification-message">
-                                    <a href="activities.html">
-                                        <div className="media">
-                                            <span className="avatar">G</span>
-                                            <div className="media-body">
-                                                <p className="noti-details"><span className="noti-title">Rolland Webber</span> completed task <span className="noti-title">Patient and Doctor video conferencing</span></p>
-                                                <p className="noti-time"><span className="notification-time">12 mins ago</span></p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li className="notification-message">
-                                    <a href="activities.html">
-                                        <div className="media">
-                                            <span className="avatar">V</span>
-                                            <div className="media-body">
-                                                <p className="noti-details"><span className="noti-title">Bernardo Galaviz</span> added new task <span className="noti-title">Private chat module</span></p>
-                                                <p className="noti-time"><span className="notification-time">2 days ago</span></p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
+                               
+                                
                             </ul>
                         </div>
                         <div className="topnav-dropdown-footer">
@@ -90,9 +78,9 @@ function Header() {
                     <a href="#" className="dropdown-toggle nav-link user-link" data-toggle="dropdown">
                         <span className="user-img">
                             <img className="rounded-circle" src="assets/img/user.jpg" width="24" alt="Admin" />
-                            <span className="status online"></span>
+                            <span className= "status online"></span>
                         </span>
-                        <span>Admin</span>
+                        <span onClick={toggleProfile}>Admin</span>
                     </a>
                     <div className="dropdown-menu">
                         <a className="dropdown-item" href="profile.html">My Profile</a>

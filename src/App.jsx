@@ -17,12 +17,12 @@ import Appointment from "./page/Appointment.jsx";
 import Categories from "./page/categories/index.jsx";
 import CategoryCreate from "./page/categories/create.jsx";
 import CategoryEdit from "./page/categories/Edit.jsx";
+import Protected from './Auth/Protected.jsx';
 
 
 
 import Supplier from "./page/supplier/index.jsx";
 import SupplierCreate from "./page/supplier/create.jsx";
-import SupplierEdit from "./page/supplier/edit.jsx";
 
 
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router'
@@ -48,7 +48,7 @@ function App() {
         <Route path="/reset-password/:token" element={<ResetPassword />} />
 
         {/* Header/Sidebar সহ */}
-        <Route element={<Layout />}>
+        <Route element={<Protected isSignedIn={isSignedIn} />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/content" element={<Content />} />
           <Route path="/doctors" element={<Doctors />} />
@@ -58,13 +58,13 @@ function App() {
           <Route path="categories">
             <Route index element={<Categories />} />
             <Route path="create" element={<CategoryCreate />} />
-            <Route path="edit/:id" element={<CategoryEdit />} />
+            <Route path="edit/:id" element={<CategoryCreate />} />
           </Route>
 
           <Route path="supplier">
             <Route index element={<Supplier />} />
             <Route path="create" element={<SupplierCreate />} />
-            <Route path="edit/:id" element={<SupplierEdit />} />
+            <Route path="edit/:id" element={<SupplierCreate />} />
           </Route>
 
           <Route path="*" element={<div style={{ padding: 20 }}>Page not found</div>} />
@@ -73,7 +73,7 @@ function App() {
 
 
 
-      <Routes>
+      {/* <Routes>
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="categories">
           <Route index element={<Categories />} />
@@ -91,7 +91,7 @@ function App() {
         <Route path="/doctors" element={<Doctors />} />
         <Route path="/patients" element={<Patients />} />
         <Route path="/appointment" element={<Appointment />} />
-      </Routes>
+      </Routes> */}
 
     </BrowserRouter>
   );

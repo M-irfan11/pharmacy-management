@@ -1,17 +1,39 @@
 import React from 'react';
 import Layout from "../Layout.jsx";
-import { Link } from 'react-router';
+import { Link, useParams } from 'react-router';
 import axios from '../../LIb/axios.js';
 function CategoryCreate() {
 
+  let { id } = useParams();
+  const [category, setCategory] = React.useState({
+    'id': '',
+    'name': '',
+    'description': ''
+  });
+
+  const fetchCategory = async (e) => {
+    let res = await axios.get(`category/single.php?id=${id}`)
+    setCategory(res.data.data[0]);
+  }
+
+  React.useEffect(() => {
+    if (id)
+      fetchCategory();
+  }, []);
 
 
   // Add / Edit
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+    let url = '';
+    if (id) {
+      url = `category/update.php?id=${id}`;
+    } else {
+      url = `category/create.php`;
+    }
 
-    let response = await axios.post('category/create.php', formData);
+    let response = await axios.post(url, formData);
 
     window.location.href = '/categories';
   };
@@ -60,13 +82,14 @@ function CategoryCreate() {
                   <form onSubmit={handleSubmit}>
                     <div className="form-group">
                       <label htmlFor="categoryName">Category Name</label>
-                      <input type="text" name="name" className="form-control" id="categoryName" placeholder="Enter category name" />
+                      <input type="text" name="name" className="form-control" id="categoryName" placeholder="Enter category name" value={category.name} onChange={(e) => setCategory({ ...category, name: e.target.value })} />
                     </div>
                     <div className="form-group">
                       <label htmlFor="categoryDescription">Category Description</label>
-                      <input type="text" name="description" className="form-control" id="categoryDescription" placeholder="Enter category description" />
+                      <input type="text" name="description" className="form-control" id="categoryDescription" placeholder="Enter category description" value={category.description} onChange={(e) => setCategory({ ...category, description: e.target.value })} />
                     </div>
-                    <button type="submit" className="btn btn-primary mt-3">Add Category</button>
+                    {id ? (<button type="submit" className="btn btn-primary mt-3">Update Category</button>) : (<button type="submit" className="btn btn-primary mt-3">Add Category</button>)}
+
                   </form>
                 </div>
               </div>
