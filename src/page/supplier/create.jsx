@@ -1,10 +1,11 @@
 import React from 'react';
-import { Link, useParams } from 'react-router';
+import { Link, useNavigate, useParams } from 'react-router';
 import Layout from "../Layout.jsx";
 import axios from '../../LIb/axios.js';
 
 function SupplierCreate() {
     const { id } = useParams();
+    const navigate = useNavigate();
 
     const [supplier, setSupplier] = React.useState({
         supplier_name: '',
@@ -13,6 +14,7 @@ function SupplierCreate() {
         address: '',
         description: ''
     });
+    const [error, setError] = React.useState('');
 
     const fetchSupplier = async () => {
         const res = await axios.get(`supplier/single.php?id=${id}`);
@@ -38,20 +40,19 @@ function SupplierCreate() {
         } else {
             url = 'supplier/create.php';
         }
-
-
-        try {
-            const res = await axios.post(url, formData);
-            console.log('Status:', res.status);
-            console.log('Response:', res.data);
-        } catch (err) {
-            console.error('Error message:', err.message);
-            console.error('Error status:', err.response?.status);
-            console.error('Error response:', err.response?.data);
-        }
-
+        let response = await axios.post(url, formData);
 
         window.location.href = '/supplier';
+
+        // try {
+        //     
+
+        // } catch (err) {
+        //     console.error('Error message:', err.message);
+        //     console.error('Error status:', err.response?.status);
+        //     console.error('Error response:', err.response?.data);
+        // }
+
     };
 
     return (
@@ -151,9 +152,7 @@ function SupplierCreate() {
                                                         onChange={(e) => setSupplier({ ...supplier, description: e.target.value })}
                                                     />
                                                 </div>
-                                                <button type="submit" className="btn btn-primary mt-3">
-                                                    {id ? 'Update Supplier' : 'Add Supplier'}
-                                                </button>
+                                                {id ? (<button type="submit" className="btn btn-primary mt-3">Update Supplier</button>) : (<button type="submit" className="btn btn-primary mt-3">Add Supplier</button>)}
                                             </form>
                                         </div>
                                     </div>
