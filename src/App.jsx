@@ -10,7 +10,6 @@ import ResetPassword from "./page/ResetPssword.jsx";
 
 import Dashboard from "./page/Dashboard.jsx";
 import Content from "./page/Content.jsx";
-import Doctors from "./page/Doctors.jsx";
 import Patients from "./page/Patients.jsx";
 import Appointment from "./page/Appointment.jsx";
 
@@ -18,6 +17,11 @@ import Categories from "./page/categories/index.jsx";
 import CategoryCreate from "./page/categories/create.jsx";
 import CategoryEdit from "./page/categories/Edit.jsx";
 import Protected from './Auth/Protected.jsx';
+
+
+import Medicines from "./page/medicines/index.jsx";
+import MedicinesCreate from "./page/medicines/create.jsx";
+
 
 
 
@@ -50,8 +54,7 @@ function App() {
         {/* Header/Sidebar সহ */}
         <Route element={<Protected isSignedIn={isSignedIn} />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/content" element={<Content />} />
-          <Route path="/doctors" element={<Doctors />} />
+          <Route path="/content" element={<Content />} />          
           <Route path="/patients" element={<Patients />} />
           <Route path="/appointment" element={<Appointment />} />
 
@@ -59,6 +62,12 @@ function App() {
             <Route index element={<Categories />} />
             <Route path="create" element={<CategoryCreate />} />
             <Route path="edit/:id" element={<CategoryCreate />} />
+          </Route>
+
+          <Route path="medicines">
+            <Route index element={<Medicines />} />
+            <Route path="create" element={<MedicinesCreate />} />
+            <Route path="edit/:id" element={<MedicinesCreate />} />
           </Route>
 
           <Route path="supplier">

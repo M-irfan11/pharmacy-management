@@ -17,8 +17,18 @@ function Sidebar() {
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="/doctors" className={getClass}>
-                                <i className="fa fa-user-md"></i> <span>Doctors</span>
+                            <NavLink to="/categories" className={getClass}>
+                                <i className="fa fa-calendar-check-o"></i> <span>Categories</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/supplier" className={getClass}>
+                                <i className="fa fa-hospital-o"></i> <span>Supplier</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/medicines" className={getClass}>
+                                <i className="fa fa-user-md"></i> <span>Medicines</span>
                             </NavLink>
                         </li>
                         <li>
@@ -31,16 +41,7 @@ function Sidebar() {
                                 <i className="fa fa-calendar"></i> <span>Appointments</span>
                             </NavLink>
                         </li>
-                        <li>
-                            <NavLink to="/categories" className={getClass}>
-                                <i className="fa fa-calendar-check-o"></i> <span>Categories</span>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/supplier" className={getClass}>
-                                <i className="fa fa-hospital-o"></i> <span>Supplier</span>
-                            </NavLink>
-                        </li>
+                       
                         <li className="submenu">
                             <a href="#"><i className="fa fa-user"></i> <span> Employees </span> <span className="menu-arrow"></span></a>
                             <ul style={{display: 'none' }}>
