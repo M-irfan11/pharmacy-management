@@ -1,29 +1,45 @@
-import { Link } from "react-router"
+import { NavLink } from "react-router"
 
 function Sidebar() {
+  const getClass = ({ isActive }) =>
+    isActive
+        ? "!bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white font-semibold rounded-r-[30px] mr-3 border-l-[5px] border-[#ed02fe] shadow-[0_6px_16px_rgba(102,16,242,0.35)] [&_i]:!text-white [&_span]:!text-white"
+        : "rounded-r-[30px] mr-3 transition-all duration-300 hover:!bg-gradient-to-br hover:from-[#0d6efd]/10 hover:to-[#6610f2]/10 hover:!text-[#6610f2] hover:[&_i]:!text-[#6610f2]"
     return (
         <div className="sidebar" id="sidebar">
             <div className="sidebar-inner slimscroll">
                 <div id="sidebar-menu" className="sidebar-menu">
                     <ul>
                         <li className="menu-title">Main</li>
-                        <li className="active">
-                            <Link to="/dashboard"><i className="fa fa-dashboard"></i> <span >Dashboard</span></Link>
+                        <li >
+                            <NavLink to="/dashboard" className={getClass}>
+                                <i className="fa fa-dashboard"></i> <span>Dashboard</span>
+                            </NavLink>
                         </li>
                         <li>
-                            <Link to="/doctors"><i className="fa fa-user-md"></i> <span>Doctors</span></Link>
+                            <NavLink to="/doctors" className={getClass}>
+                                <i className="fa fa-user-md"></i> <span>Doctors</span>
+                            </NavLink>
                         </li>
                         <li>
-                            <Link to="/patients"><i className="fa fa-wheelchair"></i> <span>Patients</span></Link>
+                            <NavLink to="/patients" className={getClass}>
+                                <i className="fa fa-wheelchair"></i> <span>Patients</span>
+                            </NavLink>
                         </li>
                         <li>
-                            <Link to="/appointment"><i className="fa fa-calendar"></i> <span>Appointments</span></Link>
+                            <NavLink to="/appointment" className={getClass}>
+                                <i className="fa fa-calendar"></i> <span>Appointments</span>
+                            </NavLink>
                         </li>
                         <li>
-                            <Link to="/categories"><i className="fa fa-calendar-check-o"></i> <span>Categories</span></Link>
+                            <NavLink to="/categories" className={getClass}>
+                                <i className="fa fa-calendar-check-o"></i> <span>Categories</span>
+                            </NavLink>
                         </li>
                         <li>
-                            <Link to="/supplier"><i className="fa fa-hospital-o"></i> <span>Supplier</span></Link>
+                            <NavLink to="/supplier" className={getClass}>
+                                <i className="fa fa-hospital-o"></i> <span>Supplier</span>
+                            </NavLink>
                         </li>
                         <li className="submenu">
                             <a href="#"><i className="fa fa-user"></i> <span> Employees </span> <span className="menu-arrow"></span></a>
