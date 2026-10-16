@@ -22,6 +22,9 @@ import Protected from './Auth/Protected.jsx';
 import Medicines from "./page/medicines/index.jsx";
 import MedicinesCreate from "./page/medicines/create.jsx";
 
+import Purchase from './page/Purchase/index.jsx';
+import PurchaseCreate from './page/Purchase/create.jsx';
+
 
 
 
@@ -70,6 +73,16 @@ function App() {
             <Route path="edit/:id" element={<MedicinesCreate />} />
           </Route>
 
+         
+
+
+           <Route path="/purchases" element={<Purchase />} />
+              <Route path="/purchases/create" element={<PurchaseCreate />} />
+              <Route path="/purchases/edit/:id" element={<PurchaseCreate />} />
+          
+
+
+
           <Route path="supplier">
             <Route index element={<Supplier />} />
             <Route path="create" element={<SupplierCreate />} />
@@ -77,30 +90,10 @@ function App() {
           </Route>
 
           <Route path="*" element={<div style={{ padding: 20 }}>Page not found</div>} />
-        </Route>
+          </Route>
+
       </Routes>
 
-
-
-      {/* <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="categories">
-          <Route index element={<Categories />} />
-          <Route path="create" element={<CategoryCreate />} />
-          <Route path="edit/:id" element={<CategoryEdit />} />
-        </Route>
-        <Route path="supplier">
-          <Route index element={<Supplier />} />
-          <Route path="create" element={<SupplierCreate />} />
-          <Route path="edit/:id" element={<SupplierEdit />} />
-        </Route>
-
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/content" element={<Content />} />
-        <Route path="/doctors" element={<Doctors />} />
-        <Route path="/patients" element={<Patients />} />
-        <Route path="/appointment" element={<Appointment />} />
-      </Routes> */}
 
     </BrowserRouter>
   );

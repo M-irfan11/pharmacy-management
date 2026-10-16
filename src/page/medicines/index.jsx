@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import Layout from "../Layout.jsx";
-import axios from '../../LIb/axios.js'; // folder নামের বানান (LIb / Llb) চেক করুন
+import axios from '../../LIb/axios.js'; 
 
 function Medicines() {
     const [medicines, setMedicines] = React.useState([]);

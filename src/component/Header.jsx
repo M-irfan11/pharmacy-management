@@ -13,7 +13,7 @@ function Header() {
         <div className="header bg-[linear-gradient(135deg,#0d6efd_0%,#6610f2_100%)]! shadow-[0_4px_16px_rgba(102,16,242,0.35)]">
             <div className="header-left bg-transparent!">
                 <a href="index-2.html" className="logo  text-white!">
-                    <img src="assets/img/logo.png" width="35" height="35" alt="" /> <span>Preclinic</span>
+                    <img src="assets/img/logoo.png" width="35" height="35" alt="" /> <span>Preclinic</span>
                 </a>
             </div>
             <a id="toggle_btn" href="javascript:void(0);" className="text-white! [&_i]:text-white!"><i className="fa fa-bars"></i></a>
