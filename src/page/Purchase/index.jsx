@@ -6,6 +6,7 @@ import axios from '../../LIb/axios.js';
 function Purchase() {
     const [purchases, setPurchases] = React.useState([]);
     const [suppliers, setSuppliers] = React.useState([]);
+    const [medicines, setMedicines] = React.useState([]);
 
     const fetchPurchases = async () => {
         try {
@@ -21,12 +22,19 @@ function Purchase() {
         axios.get('supplier/index.php')
             .then(res => setSuppliers(res.data?.data || []))
             .catch(err => console.error('Supplier fetch error:', err));
+        axios.get('medicines/index.php')
+            .then(res => setMedicines(res.data?.data || []))
+            .catch(err => console.error('Medicine fetch error:', err));
     }, []);
 
-    // Helper function to get supplier name by ID
     const supplierName = (supplierId) => {
         const s = suppliers.find(x => String(x.id) === String(supplierId));
         return s ? s.supplier_name : supplierId;
+    };
+
+    const medicineName = (medicineId) => {
+        const medicine = medicines.find(x => String(x.id) === String(medicineId));
+        return medicine ? medicine.medicine_name : medicineId;
     };
 
     async function handleDelete(id) {
@@ -69,22 +77,28 @@ function Purchase() {
                                             <th>#</th>
                                             <th>Invoice No</th>
                                             <th>Supplier</th>
+                                            <th>Medicine</th>
                                             <th>Purchase Date</th>
-                                            <th>Total Amount</th>
+                                            <th>Quantity</th>
+                                            <th>Price</th>
+                                            <th>Subtotal</th>
                                             <th className="text-right">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {purchases.length === 0 && (
-                                            <tr><td colSpan="6" className="text-center">No purchases found</td></tr>
+                                            <tr><td colSpan="9" className="text-center">No purchases found</td></tr>
                                         )}
                                         {purchases.map((purchase, index) => (
                                             <tr key={purchase.id}>
                                                 <td>{index + 1}</td>
                                                 <td>{purchase.invoice_no}</td>
                                                 <td>{supplierName(purchase.supplier_id)}</td>
+                                                <td>{medicineName(purchase.medicine_id)}</td>
                                                 <td>{purchase.purchase_date}</td>
-                                                <td>{purchase.total_amount}</td>
+                                                <td>{purchase.quantity}</td>
+                                                <td>{purchase.price}</td>
+                                                <td>{purchase.subtotal}</td>
                                                 <td className="text-right">
                                                     <Link
                                                         to={`/purchases/edit/${purchase.id}`}

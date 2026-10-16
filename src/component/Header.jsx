@@ -16,8 +16,8 @@ function Header() {
                     <img src={`${import.meta.env.BASE_URL}assets/img/logo.png`} width="35" height="35" alt="" /> <span>Easmin Pharma</span>
                 </a>
             </div>
-            {/* <a id="toggle_btn" href="javascript:void(0);" className="text-white! [&_i]:text-white!"><i className="fa fa-bars"></i></a>
-            <a id="mobile_btn" className="mobile_btn float-left" href="#sidebar"><i className="fa fa-bars"></i></a> */}
+            <a id="toggle_btn" href="javascript:void(0);" className="text-white! [&_i]:text-white!"><i className="fa fa-bars"></i></a>
+            <a id="mobile_btn" className="mobile_btn float-left" href="#sidebar"><i className="fa fa-bars"></i></a>
             <ul className="nav user-menu float-right">
                 <li className="nav-item dropdown d-none d-sm-block">
                     <a href="#" className="dropdown-toggle nav-link" data-toggle="dropdown"><i className="fa fa-bell-o"></i> <span className="badge badge-pill bg-danger float-right">3</span></a>
