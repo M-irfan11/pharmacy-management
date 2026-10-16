@@ -40,7 +40,7 @@ function Medicines() {
                                 <h4 className="page-title">Medicines</h4>
                             </div>
                             <div className="col-sm-8 col-9 text-right m-b-20">
-                                <Link to="/medicines/create" className="btn btn-primary btn-rounded float-right">
+                                <Link to="/medicines/create" className="btn btn-rounded float-right !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0">
                                     <i className="fa fa-plus"></i> Add Medicine
                                 </Link>
                             </div>
@@ -75,7 +75,7 @@ function Medicines() {
                                                     <td className="text-right">
                                                         <Link
                                                             to={`/medicines/edit/${medicine.id}`}
-                                                            className="btn btn-sm btn-primary mr-1"
+                                                            className="btn btn-sm btn-primary mr-1 !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0"
                                                             title="Edit"
                                                         >
                                                             <i className="fa fa-pencil"></i>

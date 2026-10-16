@@ -88,7 +88,7 @@ function CategoryCreate() {
                       <label htmlFor="categoryDescription">Category Description</label>
                       <input type="text" name="description" className="form-control" id="categoryDescription" placeholder="Enter category description" value={category.description} onChange={(e) => setCategory({ ...category, description: e.target.value })} />
                     </div>
-                    {id ? (<button type="submit" className="btn btn-primary mt-3 ">Update Category</button>) : (<button type="submit" className="btn btn-primary mt-3">Add Category</button>)}
+                    {id ? (<button type="submit" className="btn btn-primary mt-3 !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0 ">Update Category</button>) : (<button type="submit" className="btn btn-primary mt-3 !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0">Add Category</button>)}
 
                   </form>
                 </div>

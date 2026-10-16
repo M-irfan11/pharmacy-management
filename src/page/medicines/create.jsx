@@ -75,7 +75,7 @@ function MedicinesCreate() {
                                                 value={medicines.category_id || ''} onChange={set('category_id')} required>
                                                 <option value="">Select category</option>
                                                 {categories.map(c => (
-                                                    <option key={c.id} value={c.id}>{c.category_name}</option>
+                                                    <option key={c.id} value={c.id}>{c.name}</option>
                                                 ))}
                                             </select>
                                         </div>
@@ -124,7 +124,7 @@ function MedicinesCreate() {
                                             <input type="date" name="expiry_date" id="expiry_date" className="form-control"
                                                 value={medicines.expiry_date || ''} onChange={set('expiry_date')} />
                                         </div>
-                                        <button type="submit" className="btn btn-primary mt-3">
+                                        <button type="submit" className="btn btn-primary mt-3 !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0">
                                             {id ? 'Update Medicine' : 'Add Medicine'}
                                         </button>
                                     </form>

@@ -41,7 +41,7 @@ function Supplier() {
                             <div className="col-sm-8 col-9 text-right m-b-20">
                                 <Link
                                     to="/supplier/create"
-                                    className="btn btn-primary btn-rounded float-right"
+                                    className="btn btn-primary btn-rounded float-right !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0"
                                 >
                                     <i className="fa fa-plus"></i> Add Supplier
                                 </Link>
@@ -77,13 +77,13 @@ function Supplier() {
                                                     <td className="text-right">
                                                         <Link
                                                             to={`/supplier/edit/${supplier.id}`}
-                                                            className="btn btn-sm btn-primary mr-1"
+                                                            className="btn btn-sm btn-primary mr-1 !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0"
                                                             title="Edit"
                                                         >
                                                             <i className="fa fa-pencil"></i>
                                                         </Link>
                                                         <button
-                                                            className="btn btn-sm btn-danger"
+                                                            className="btn btn-sm btn-danger !bg-gradient-to-br from-[#dc3545] to-[#6c757d] !text-white border-0"
                                                             title="Delete"
                                                             onClick={() => handleDelete(supplier.id)}
                                                         >

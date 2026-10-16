@@ -119,7 +119,7 @@ function PurchaseCreate() {
                                                 placeholder="Enter total amount"
                                                 value={purchase.total_amount} onChange={set('total_amount')} required />
                                         </div>
-                                        <button type="submit" className="btn btn-primary mt-3">
+                                        <button type="submit" className="btn btn-primary mt-3 !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0">
                                             {id ? 'Update Purchase' : 'Add Purchase'}
                                         </button>
                                     </form>

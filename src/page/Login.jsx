@@ -42,7 +42,11 @@ function Login() {
           <div className="account-box">
             <form onSubmit={handleSubmit} className="form-signin">
               <div className="account-logo">
-                <Link to="/"><img src="/assets/img/logo-dark.png" alt="" /></Link>
+                <Link to="/">
+                  <span className="inline-flex h-[60px] w-[60px] items-center justify-center rounded-full !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white">
+                    <i className="fa fa-medkit text-3xl" aria-hidden="true"></i>
+                  </span>
+              </Link>
               </div>
               <div className="form-group">
                 <label htmlFor="email">Username or Email</label>
@@ -71,7 +75,7 @@ function Login() {
                 </div>
               )}
               <div className="form-group text-center">
-                <button type="submit" className="btn btn-primary account-btn">Login</button>
+                <button type="submit" className="btn btn-primary account-btn !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0 ">Login</button>
               </div>
               <div className="text-center register-link">
                 Don’t have an account? <Link to="/register">Register Now</Link>

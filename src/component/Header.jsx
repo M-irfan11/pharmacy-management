@@ -13,11 +13,11 @@ function Header() {
         <div className="header bg-[linear-gradient(135deg,#0d6efd_0%,#6610f2_100%)]! shadow-[0_4px_16px_rgba(102,16,242,0.35)]">
             <div className="header-left bg-transparent!">
                 <a href="index-2.html" className="logo  text-white!">
-                    <img src="assets/img/logoo.png" width="35" height="35" alt="" /> <span>Preclinic</span>
+                    <img src={`${import.meta.env.BASE_URL}assets/img/logo.png`} width="35" height="35" alt="" /> <span>Easmin Pharma</span>
                 </a>
             </div>
-            <a id="toggle_btn" href="javascript:void(0);" className="text-white! [&_i]:text-white!"><i className="fa fa-bars"></i></a>
-            <a id="mobile_btn" className="mobile_btn float-left" href="#sidebar"><i className="fa fa-bars"></i></a>
+            {/* <a id="toggle_btn" href="javascript:void(0);" className="text-white! [&_i]:text-white!"><i className="fa fa-bars"></i></a>
+            <a id="mobile_btn" className="mobile_btn float-left" href="#sidebar"><i className="fa fa-bars"></i></a> */}
             <ul className="nav user-menu float-right">
                 <li className="nav-item dropdown d-none d-sm-block">
                     <a href="#" className="dropdown-toggle nav-link" data-toggle="dropdown"><i className="fa fa-bell-o"></i> <span className="badge badge-pill bg-danger float-right">3</span></a>
@@ -31,7 +31,7 @@ function Header() {
                                     <a href="activities.html">
                                         <div className="media">
                                             <span className="avatar">
-                                                <img alt="John Doe" src="assets/img/user.jpg" className="img-fluid" />
+                                                <img alt="John Doe" src={`${import.meta.env.BASE_URL}assets/img/user.jpg`} className="img-fluid" />
                                             </span>
                                             <div className="media-body">
                                                 <p className="noti-details"><span className="noti-title">John Doe</span> added new task <span className="noti-title">Patient appointment booking</span></p>
@@ -77,16 +77,16 @@ function Header() {
                 <li className="nav-item dropdown has-arrow">
                     <a href="#" className="dropdown-toggle nav-link user-link" data-toggle="dropdown">
                         <span className="user-img">
-                            <img className="rounded-circle" src="assets/img/user.jpg" width="24" alt="Admin" />
+                            <img className="rounded-circle" src={`${import.meta.env.BASE_URL}assets/img/user.jpg`} width="24" alt="Admin" />
                             <span className= "status online"></span>
                         </span>
                         <span onClick={toggleProfile} style={{ border: "none", borderRadius: "20px", padding: "7px 16px", fontSize: "15px", fontWeight: "500", cursor: "pointer", }}>Admin</span>
                         {openProfile && (
-                            <div className="dropdown-menu show" style={{ position: "absolute", top: "100%", right: 0, left: "auto", border: "1px solid black"}}>
-                                <Link className="dropdown-item" to="/profile" onClick={() => setOpenProfile(false)} style={{ borderBottom: "1px solid black"}}>
+                            <div className="dropdown-menu show" style={{ position: "absolute", top: "100%", right: 0, left: "auto", border: "1px solid black", background: "linear-gradient(135deg, #0d6efd 0%, #6610f2 100%)"}}>
+                                <Link className="dropdown-item !text-white hover:!bg-white/20" to="/profile" onClick={() => setOpenProfile(false)} style={{ borderBottom: "1px solid black"}}>
                                     <i className="mdi mdi-account mr-2 text-success"></i>Profile
                                 </Link>
-                                <Link className="dropdown-item" to="/logout" onClick={() => setOpenProfile(false)}>
+                                <Link className="dropdown-item !text-white hover:!bg-white/20" to="/logout" onClick={() => setOpenProfile(false)}>
                                     <i className="mdi mdi-logout mr-2 text-primary"></i>Signout
                                 </Link>
                             </div>

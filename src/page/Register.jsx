@@ -65,8 +65,10 @@ function Register() {
             <form onSubmit={handleSubmit} className="form-signin">
               <div className="account-logo">
                 <Link to="/">
-                  <img src="assets/img/logo-dark.png" alt="Logo" />
-                </Link>
+                  <span className="inline-flex h-[60px] w-[60px] items-center justify-center rounded-full !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white">
+                    <i className="fa fa-medkit text-3xl" aria-hidden="true"></i>
+                  </span>
+              </Link>
               </div>
 
               {message && (
@@ -168,7 +170,7 @@ function Register() {
 
               <div className="form-group text-center">
                 <button
-                  className="btn btn-primary account-btn"
+                  className="btn btn-primary account-btn !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0"
                   type="submit"
                   disabled={loading}
                 >

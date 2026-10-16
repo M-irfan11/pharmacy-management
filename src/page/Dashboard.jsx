@@ -65,10 +65,10 @@ const salesOptions = {
 
 // ---- Dummy data (pore API theke replace korben) ----
 const stats = [
-    { bg: 'dash-widget-bg1', title: 'widget-title1', icon: 'fa fa-medkit', value: '1,248', label: 'Medicines' },
-    { bg: 'dash-widget-bg2', title: 'widget-title2', icon: 'fa fa-users', value: '2,102', label: 'Customers' },
-    { bg: 'dash-widget-bg3', title: 'widget-title3', icon: 'fa fa-shopping-cart', value: '2,458', label: 'Orders' },
-    { bg: 'dash-widget-bg4', title: 'widget-title4', icon: 'fa fa-exclamation-triangle', value: '36', label: 'Low Stock' },
+    { bg: 'dash-widget-bg1', title: 'widget-title1', icon: 'fa fa-medkit', value: '1,248', label: 'Medicines', gradient: '!bg-gradient-to-br from-[#0d6efd] to-[#6610f2]' },
+    { bg: 'dash-widget-bg2', title: 'widget-title2', icon: 'fa fa-users', value: '2,102', label: 'Customers', gradient: '!bg-gradient-to-br from-[#55ce63] to-[#28a745]' },
+    { bg: 'dash-widget-bg3', title: 'widget-title3', icon: 'fa fa-shopping-cart', value: '2,458', label: 'Orders', gradient: '!bg-gradient-to-br from-[#7a92a3] to-[#5c7383]' },
+    { bg: 'dash-widget-bg4', title: 'widget-title4', icon: 'fa fa-exclamation-triangle', value: '36', label: 'Low Stock', gradient: '!bg-gradient-to-br from-[#ffbc35] to-[#ff9800]' },
 ]
 
 const latestOrders = [
@@ -142,7 +142,7 @@ function Dashboard() {
 
     return (
         <Layout>
-            <div className="page-wrapper">
+            <div className="page-wrapper !pt-[50px]">
                 <div className="content">
 
                     {/* ===== Top stat widgets ===== */}
@@ -150,10 +150,10 @@ function Dashboard() {
                         {stats.map((s) => (
                             <div key={s.label} className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                                 <div className="dash-widget">
-                                    <span className={s.bg}><i className={s.icon} aria-hidden="true"></i></span>
+                                    <span className={`${s.bg} ${s.gradient}`}><i className={s.icon} aria-hidden="true"></i></span>
                                     <div className="dash-widget-info text-right">
                                         <h3>{s.value}</h3>
-                                        <span className={s.title}>{s.label} <i className="fa fa-check" aria-hidden="true"></i></span>
+                                        <span className={`${s.title} ${s.gradient}`}>{s.label} <i className="fa fa-check" aria-hidden="true"></i></span>
                                     </div>
                                 </div>
                             </div>
@@ -199,9 +199,9 @@ function Dashboard() {
                                         <div className="chart clearfix">
                                             {topSelling.map((m) => (
                                                 <div className="item" key={m.name}>
-                                                    <div className="bar">
+                                                    <div className="bar !bg-gradient-to-br from-[#ffbc35] to-[#ff9800]">
                                                         <span className="percent">{m.percent}%</span>
-                                                        <div className="item-progress" data-percent={m.percent}>
+                                                        <div className="item-progress !bg-gradient-to-br from-[#ffbc35] to-[#ff9800]" data-percent={m.percent}>
                                                             <span className="title">{m.name}</span>
                                                         </div>
                                                     </div>
@@ -220,7 +220,7 @@ function Dashboard() {
                             <div className="card">
                                 <div className="card-header">
                                     <h4 className="card-title d-inline-block">Latest Orders</h4>
-                                    <Link to="/orders" className="btn btn-primary float-right">View all</Link>
+                                    <Link to="/orders" className="btn btn-primary float-right !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0">View all</Link>
                                 </div>
                                 <div className="card-body p-0">
                                     <div className="table-responsive">
@@ -243,7 +243,7 @@ function Dashboard() {
                                                         </td>
                                                         <td>{o.price}</td>
                                                         <td>
-                                                            <button className={`btn btn-primary ${statusClass[o.status]}`}>{o.status}</button>
+                                                            <button className={`btn btn-primary ${statusClass[o.status]} hover:!bg-gradient-to-br hover:from-[#0d6efd] hover:to-[#6610f2] hover:!text-white hover:!border-transparent`}>{o.status}</button>
                                                         </td>
                                                         <td className="text-right">
                                                             <a href="#" className="m-r-10"><i className="fa fa-eye" aria-hidden="true"></i></a>
@@ -272,7 +272,7 @@ function Dashboard() {
                                                     <span
                                                         className="d-inline-flex align-items-center justify-content-center rounded-circle m-r-10"
                                                         style={{
-                                                            width: '42px', height: '42px', flexShrink: 0, background: m.grad,
+                                                            width: '42px', height: '42px', flexShrink: 0, background: 'linear-gradient(135deg, #0d6efd 0%, #6610f2 100%)',
                                                             color: '#fff', fontSize: '17px', boxShadow: '0 4px 10px rgba(0,0,0,0.15)',
                                                         }}
                                                     >
@@ -354,7 +354,7 @@ function Dashboard() {
                             <div className="card">
                                 <div className="card-header">
                                     <h4 className="card-title d-inline-block">New Customers</h4>
-                                    <Link to="/customers" className="btn btn-primary float-right">View all</Link>
+                                    <Link to="/customers" className="btn btn-primary float-right !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0">View all</Link>
                                 </div>
                                 <div className="card-block">
                                     <div className="table-responsive">
@@ -367,7 +367,7 @@ function Dashboard() {
                                                     </td>
                                                     <td>johndoe21@gmail.com</td>
                                                     <td>+1-202-555-0125</td>
-                                                    <td><button className="btn btn-primary btn-primary-one float-right">Regular</button></td>
+                                                    <td><button className="btn btn-primary btn-primary-one float-right hover:!bg-gradient-to-br hover:from-[#0d6efd] hover:to-[#6610f2] hover:!text-white hover:!border-transparent">Regular</button></td>
                                                 </tr>
                                                 <tr>
                                                     <td>
@@ -376,7 +376,7 @@ function Dashboard() {
                                                     </td>
                                                     <td>richard123@yahoo.com</td>
                                                     <td>202-555-0127</td>
-                                                    <td><button className="btn btn-primary btn-primary-two float-right">Wholesale</button></td>
+                                                    <td><button className="btn btn-primary btn-primary-two float-right hover:!bg-gradient-to-br hover:from-[#0d6efd] hover:to-[#6610f2] hover:!text-white hover:!border-transparent">Wholesale</button></td>
                                                 </tr>
                                                 <tr>
                                                     <td>
@@ -385,7 +385,7 @@ function Dashboard() {
                                                     </td>
                                                     <td>william@yahoo.com</td>
                                                     <td>+1-202-555-0106</td>
-                                                    <td><button className="btn btn-primary btn-primary-three float-right">Regular</button></td>
+                                                    <td><button className="btn btn-primary btn-primary-three float-right hover:!bg-gradient-to-br hover:from-[#0d6efd] hover:to-[#6610f2] hover:!text-white hover:!border-transparent">Regular</button></td>
                                                 </tr>
                                                 <tr>
                                                     <td>
@@ -394,7 +394,7 @@ function Dashboard() {
                                                     </td>
                                                     <td>martin@yahoo.com</td>
                                                     <td>776-2323 89562015</td>
-                                                    <td><button className="btn btn-primary btn-primary-four float-right">Walk-in</button></td>
+                                                    <td><button className="btn btn-primary btn-primary-four float-right hover:!bg-gradient-to-br hover:from-[#0d6efd] hover:to-[#6610f2] hover:!text-white hover:!border-transparent">Walk-in</button></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -432,14 +432,10 @@ function Dashboard() {
                     </div>
 
                     {/* ===== Footer ===== */}
-                    <div className="d-flex justify-content-between align-items-center pb-3" style={{ fontSize: '13px' }}>
-                        <span>&copy; 2026 Your Pharmacy Name. All Rights Reserved.</span>
-                        <span>
-                            <Link to="/faq">FAQ</Link>
-                            <span className="m-l-10 m-r-10">/</span>
-                            <Link to="/support">Support</Link>
-                        </span>
-                    </div>
+                    {/* <div className="d-flex justify-content-between align-items-center pb-3" style={{ fontSize: '13px' }}>
+                        
+                        
+                    </div> */}
                 </div>
 
                 {/* ===== Messages sidebar (template er moto) ===== */}

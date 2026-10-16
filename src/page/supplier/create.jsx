@@ -152,7 +152,7 @@ function SupplierCreate() {
                                                         onChange={(e) => setSupplier({ ...supplier, description: e.target.value })}
                                                     />
                                                 </div>
-                                                {id ? (<button type="submit" className="btn btn-primary mt-3">Update Supplier</button>) : (<button type="submit" className="btn btn-primary mt-3">Add Supplier</button>)}
+                                                {id ? (<button type="submit" className="btn btn-primary mt-3 !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0 ">Update Supplier</button>) : (<button type="submit" className="btn btn-primary mt-3 !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0">Add Supplier</button>)}
                                             </form>
                                         </div>
                                     </div>

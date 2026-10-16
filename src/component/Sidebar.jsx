@@ -10,7 +10,7 @@ function Sidebar() {
             <div className="sidebar-inner slimscroll">
                 <div id="sidebar-menu" className="sidebar-menu">
                     <ul>
-                        <li className="menu-title">Main</li>
+                        <li className="menu-title !py-1.5"></li>
                         <li >
                             <NavLink to="/dashboard" className={getClass}>
                                 <i className="fa fa-tachometer"></i> <span>Dashboard</span> 
