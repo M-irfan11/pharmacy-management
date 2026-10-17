@@ -5,6 +5,7 @@ import { useState } from "react";
 import Login from "./page/Login.jsx";
 import Logout from "./Auth/Logout.jsx";
 import Register from "./page/Register.jsx";
+import Profile from "./page/Profile.jsx";
 import ForgotPassword from "./page/Forgot-password.jsx";
 import ResetPassword from "./page/ResetPssword.jsx";
 
@@ -63,6 +64,7 @@ function App() {
           <Route path="/content" element={<Content />} />          
           <Route path="/patients" element={<Patients />} />
           <Route path="/appointment" element={<Appointment />} />
+          <Route path="/profile" element={<Profile />} />
 
           <Route path="categories">
             <Route index element={<Categories />} />

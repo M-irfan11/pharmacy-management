@@ -2,6 +2,9 @@ import { Link } from "react-router";
 import { useState } from "react";
 
 function Header() {
+    // const user = JSON.parse(localStorage.getItem("userdata") || "{}");
+
+    const user =JSON.parse(localStorage.getItem("userdata") || "{}");
     const [openProfile, setOpenProfile] = useState(false);
 
     const toggleProfile = () => {
@@ -80,7 +83,7 @@ function Header() {
                             <img className="rounded-circle" src={`${import.meta.env.BASE_URL}assets/img/user.jpg`} width="24" alt="Admin" />
                             <span className= "status online"></span>
                         </span>
-                        <span onClick={toggleProfile} style={{ border: "none", borderRadius: "20px", padding: "7px 16px", fontSize: "15px", fontWeight: "500", cursor: "pointer", }}>Admin</span>
+                        <span onClick={toggleProfile} style={{ border: "none", borderRadius: "20px", padding: "7px 16px", fontSize: "15px", fontWeight: "500", cursor: "pointer", }}>{user.name || "Admin"}</span>
                         {openProfile && (
                             <div className="dropdown-menu show" style={{ position: "absolute", top: "100%", right: 0, left: "auto", border: "1px solid black", background: "linear-gradient(135deg, #0d6efd 0%, #6610f2 100%)"}}>
                                 <Link className="dropdown-item !text-white hover:!bg-white/20" to="/profile" onClick={() => setOpenProfile(false)} style={{ borderBottom: "1px solid black"}}>
