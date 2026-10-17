@@ -1,84 +1,114 @@
 import React from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import Layout from "../Layout.jsx";
+import InvoiceItems from '../InvoiceItems.jsx';
 import axios from '../../LIb/axios.js';
+
+const today = () => {
+    const date = new Date();
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    return date.toISOString().slice(0, 10);
+};
+
+const getUserId = () => {
+    try {
+        return JSON.parse(localStorage.getItem('userdata') || '{}')?.id || '';
+    } catch {
+        return '';
+    }
+};
 
 function PurchaseCreate() {
     const { id } = useParams();
     const navigate = useNavigate();
-
-    
-    const currentUserId = (() => {
-        try {
-            return JSON.parse(localStorage.getItem('userdata'))?.id || '';
-        } catch {
-            return '';
-        }
-    })();
-
+    const currentUserId = getUserId();
     const [purchase, setPurchase] = React.useState({
         supplier_id: '',
-        medicine_id: '',
         invoice_no: '',
-        purchase_date: '',
-        quantity: '',
-        price: '',
+        purchase_date: today(),
         user_id: currentUserId,
     });
     const [suppliers, setSuppliers] = React.useState([]);
     const [medicines, setMedicines] = React.useState([]);
-
-    const set = (field) => (e) => setPurchase(current => ({ ...current, [field]: e.target.value }));
-    const subtotal = Number(purchase.quantity || 0) * Number(purchase.price || 0);
+    const [items, setItems] = React.useState([]);
+    const [saving, setSaving] = React.useState(false);
+    const setPurchaseField = (field) => (event) => setPurchase(current => ({ ...current, [field]: event.target.value }));
 
     React.useEffect(() => {
-        axios.get('supplier/index.php').then(res => setSuppliers(res.data?.data || []));
-        axios.get('medicines/index.php').then(res => setMedicines(res.data?.data || []));
+        let cancelled = false;
+        Promise.all([
+            axios.get('supplier/index.php'),
+            axios.get('medicines/index.php'),
+            id ? axios.get(`purchase/single.php?id=${id}`) : Promise.resolve(null),
+        ]).then(([supplierResponse, medicineResponse, purchaseResponse]) => {
+            if (cancelled) return;
 
-        if (id) {
-            axios.get(`purchase/single.php?id=${id}`).then(res => {
-                const row = res.data?.data?.[0];
-                if (row) {
-                    setPurchase({
-                        supplier_id: row.supplier_id ?? '',
-                        medicine_id: row.medicine_id ?? '',
-                        invoice_no: row.invoice_no ?? '',
-                        purchase_date: row.purchase_date ?? '',
-                        quantity: row.quantity ?? '',
-                        price: row.price ?? '',
-                        user_id: row.user_id ?? currentUserId,
-                    });
-                }
+            const medicineList = medicineResponse.data?.data || [];
+            const invoice = purchaseResponse?.data?.data?.[0];
+            setSuppliers(supplierResponse.data?.data || []);
+            setMedicines(medicineList);
+
+            if (!invoice) {
+                if (id) alert(purchaseResponse?.data?.message || 'Purchase invoice could not be loaded');
+                return;
+            }
+
+            setPurchase({
+                supplier_id: String(invoice.supplier_id || ''),
+                invoice_no: invoice.invoice_no || '',
+                purchase_date: invoice.purchase_date || today(),
+                user_id: invoice.user_id || currentUserId,
             });
+            setItems((invoice.items || []).map((item, index) => {
+                const medicine = medicineList.find(row => String(row.id) === String(item.medicine_id));
+                return {
+                    row_id: `${item.id || item.medicine_id}-${index}`,
+                    medicine_id: String(item.medicine_id),
+                    quantity: String(item.quantity),
+                    unit_price: String(item.unit_price),
+                    medicine_name: medicine?.medicine_name || item.medicine_name || `Medicine ${item.medicine_id}`,
+                    stock_qty: medicine?.stock_qty ?? '',
+                };
+            }));
+        }).catch(error => {
+            console.error('Purchase form load error:', error);
+            if (!cancelled) alert(error.response?.data?.message || 'Purchase form data could not be loaded');
+        });
+        return () => { cancelled = true; };
+    }, [id, currentUserId]);
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        const invalidItem = items.some(item =>
+            !Number.isInteger(Number(item.quantity)) || Number(item.quantity) < 1
+            || item.unit_price === '' || !Number.isFinite(Number(item.unit_price))
+            || Number(item.unit_price) < 0
+        );
+        if (!items.length || invalidItem) {
+            alert('Add at least one medicine and enter a valid quantity and price for every item');
+            return;
         }
-    }, [id]);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        
         const formData = new FormData();
-        formData.append('supplier_id', purchase.supplier_id);
-        formData.append('medicine_id', purchase.medicine_id);
-        formData.append('invoice_no', purchase.invoice_no);
-        formData.append('purchase_date', purchase.purchase_date);
-        formData.append('quantity', purchase.quantity);
-        formData.append('price', purchase.price);
-        formData.append('subtotal', subtotal.toFixed(2));
-        formData.append('user_id', purchase.user_id);
-
-        const url = id ? `purchase/update.php?id=${id}` : 'purchase/create.php';
+        formData.append('payload', JSON.stringify({
+            ...purchase,
+            items: items.map(({ medicine_id, quantity, unit_price }) => ({ medicine_id, quantity, unit_price })),
+        }));
+        setSaving(true);
 
         try {
-            const response = await axios.post(url, formData);
-            if (response.data?.status === false) {
-                alert(response.data.message || 'Save failed');
+            const response = await axios.post(id ? `purchase/update.php?id=${id}` : 'purchase/create.php', formData);
+            if (!response.data?.status) {
+                alert(response.data?.message || 'Purchase could not be saved');
                 return;
             }
             navigate('/purchases');
-        } catch (err) {
-            console.error('Error:', err.response?.data || err.message);
-            alert('Save failed');
+        } catch (error) {
+            console.error('Purchase save error:', error);
+            alert(error.response?.data?.message || 'Purchase could not be saved');
+        } finally {
+            setSaving(false);
         }
     };
 
@@ -87,77 +117,33 @@ function PurchaseCreate() {
             <div className="page-wrapper">
                 <div className="content">
                     <div className="page-header">
-                        <h3 className="fw-bold mb-3">{id ? 'Edit Purchase' : 'Add New Purchase'}</h3>
+                        <h3 className="fw-bold mb-3">{id ? 'Edit Purchase Invoice' : 'New Purchase Invoice'}</h3>
                         <ul className="breadcrumbs mb-3">
-                            <li className="nav-home"><a href="#"><i className="icon-home"></i></a></li>
-                            <li className="separator"><i className="icon-arrow-right"></i></li>
                             <li className="nav-item"><Link to="/purchases">Purchases</Link></li>
-                            <li className="separator"><i className="icon-arrow-right"></i></li>
-                            <li className="nav-item"><a href="#">{id ? 'Edit' : 'Add New'}</a></li>
+                            <li className="separator"><i className="icon-arrow-right"></i></li><li className="nav-item">{id ? 'Edit' : 'New'}</li>
                         </ul>
                     </div>
-
-                    <div className="row">
-                        <div className="col-md-12">
-                            <div className="card card-round">
-                                <div className="card-body">
-                                    <form onSubmit={handleSubmit}>
-                                        <div className="form-group">
-                                            <label htmlFor="supplier_id">Supplier</label>
-                                            <select id="supplier_id" className="form-control"
-                                                value={purchase.supplier_id} onChange={set('supplier_id')} required>
-                                                <option value="">Select supplier</option>
-                                                {suppliers.map(s => (
-                                                    <option key={s.id} value={s.id}>{s.supplier_name}</option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="medicine_id">Medicine</label>
-                                            <select id="medicine_id" className="form-control"
-                                                value={purchase.medicine_id} onChange={set('medicine_id')} required>
-                                                <option value="">Select medicine</option>
-                                                {medicines.map(medicine => (
-                                                    <option key={medicine.id} value={medicine.id}>
-                                                        {medicine.medicine_name}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="invoice_no">Invoice No</label>
-                                            <input type="text" id="invoice_no" className="form-control"
-                                                placeholder="Enter invoice number"
-                                                value={purchase.invoice_no} onChange={set('invoice_no')} required />
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="purchase_date">Purchase Date</label>
-                                            <input type="date" id="purchase_date" className="form-control"
-                                                value={purchase.purchase_date} onChange={set('purchase_date')} required />
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="quantity">Quantity</label>
-                                            <input type="number" min="1" step="1" id="quantity" className="form-control"
-                                                placeholder="Enter quantity"
-                                                value={purchase.quantity} onChange={set('quantity')} required />
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="price">Purchase Price</label>
-                                            <input type="number" min="0" step="0.01" id="price" className="form-control"
-                                                placeholder="Enter price per unit"
-                                                value={purchase.price} onChange={set('price')} required />
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="subtotal">Subtotal</label>
-                                            <input type="number" id="subtotal" className="form-control"
-                                                value={subtotal.toFixed(2)} readOnly />
-                                        </div>
-                                        <button type="submit" className="btn btn-primary mt-3 !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0">
-                                            {id ? 'Update Purchase' : 'Add Purchase'}
-                                        </button>
-                                    </form>
+                    <div className="card card-round">
+                        <div className="card-body">
+                            <form onSubmit={handleSubmit}>
+                                <div className="row">
+                                    <div className="form-group col-md-4">
+                                        <label htmlFor="supplier_id">Supplier</label>
+                                        <select id="supplier_id" className="form-control" value={purchase.supplier_id} onChange={setPurchaseField('supplier_id')} required>
+                                            <option value="">Select supplier</option>
+                                            {suppliers.map(supplier => <option key={supplier.id} value={supplier.id}>{supplier.supplier_name}</option>)}
+                                        </select>
+                                    </div>
+                                    <div className="form-group col-md-4">
+                                        <label htmlFor="invoice_no">Invoice No</label><input id="invoice_no" className="form-control" value={purchase.invoice_no} onChange={setPurchaseField('invoice_no')} required maxLength="50" />
+                                    </div>
+                                    <div className="form-group col-md-4">
+                                        <label htmlFor="purchase_date">Purchase Date</label><input id="purchase_date" type="date" className="form-control" value={purchase.purchase_date} onChange={setPurchaseField('purchase_date')} required />
+                                    </div>
                                 </div>
-                            </div>
+                                <InvoiceItems type="purchase" medicines={medicines} items={items} setItems={setItems} />
+                                <button type="submit" disabled={saving} className="btn btn-primary mt-3 !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0">{saving ? 'Saving...' : id ? 'Update Invoice' : 'Save Purchase'}</button>
+                            </form>
                         </div>
                     </div>
                 </div>
