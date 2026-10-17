@@ -1,9 +1,9 @@
 import { useState } from "react";
 
 
-import Layout from "./page/Layout.jsx";
+// import Layout from "./page/Layout.jsx";
 import Login from "./page/Login.jsx";
-import Logout from "./auth/Logout.jsx";
+import Logout from "./Auth/Logout.jsx";
 import Register from "./page/Register.jsx";
 import ForgotPassword from "./page/Forgot-password.jsx";
 import ResetPassword from "./page/ResetPssword.jsx";
@@ -24,6 +24,9 @@ import MedicinesCreate from "./page/medicines/create.jsx";
 
 import Purchase from './page/Purchase/index.jsx';
 import PurchaseCreate from './page/Purchase/create.jsx';
+
+import Sale from './page/Sale/index.jsx';
+import SaleCreate from './page/Sale/create.jsx';
 
 
 
@@ -79,6 +82,11 @@ function App() {
            <Route path="/purchases" element={<Purchase />} />
               <Route path="/purchases/create" element={<PurchaseCreate />} />
               <Route path="/purchases/edit/:id" element={<PurchaseCreate />} />
+
+
+          <Route path="/sales" element={<Sale />} />
+            <Route path="/sales/create" element={<SaleCreate />} />
+            <Route path="/sales/edit/:id" element={<SaleCreate />} />
           
 
 

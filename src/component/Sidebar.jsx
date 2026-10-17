@@ -27,18 +27,19 @@ function Sidebar() {
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="/medicines" className={getClass}>
-                                <i className="fa fa-medkit"></i> <span>Medicines</span>
-                            </NavLink>
-                        </li>
-                        <li>
                             <NavLink to="/purchases" className={getClass}>
                                 <i className="fa fa-shopping-cart"></i> <span>Purchase</span>
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="/appointment" className={getClass}>
-                                <i className="fa fa-calendar"></i> <span>Appointments</span>
+                            <NavLink to="/medicines" className={getClass}>
+                                <i className="fa fa-medkit"></i> <span>Medicines</span>
+                            </NavLink>
+                        </li>
+                        
+                        <li>
+                            <NavLink to="/sales" className={getClass}>
+                                <i className="fa fa-credit-card"></i> <span>Sales</span>
                             </NavLink>
                         </li>
                        
