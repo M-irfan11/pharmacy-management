@@ -32,6 +32,11 @@ function Sidebar() {
                             </NavLink>
                         </li>
                         <li>
+                            <NavLink to="/purchase-returns" className={getClass}>
+                                <i className="fa fa-undo"></i> <span>Purchase Returns</span>
+                            </NavLink>
+                        </li>
+                        <li>
                             <NavLink to="/medicines" className={getClass}>
                                 <i className="fa fa-medkit"></i> <span>Medicines</span>
                             </NavLink>
@@ -40,6 +45,11 @@ function Sidebar() {
                         <li>
                             <NavLink to="/sales" className={getClass}>
                                 <i className="fa fa-credit-card"></i> <span>Sales</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/sale-returns" className={getClass}>
+                                <i className="fa fa-reply"></i> <span>Sale Returns</span>
                             </NavLink>
                         </li>
                        
@@ -187,4 +197,3 @@ function Sidebar() {
     )
 }
 export default Sidebar
-

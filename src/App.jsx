@@ -28,6 +28,10 @@ import PurchaseCreate from './page/Purchase/create.jsx';
 
 import Sale from './page/Sale/index.jsx';
 import SaleCreate from './page/Sale/create.jsx';
+import PurchaseReturns from './page/Purchase_return/index.jsx';
+import PurchaseReturnCreate from './page/Purchase_return/create.jsx';
+import SaleReturns from './page/Sale_return/index.jsx';
+import SaleReturnCreate from './page/Sale_return/create.jsx';
 
 
 
@@ -84,11 +88,17 @@ function App() {
            <Route path="/purchases" element={<Purchase />} />
               <Route path="/purchases/create" element={<PurchaseCreate />} />
               <Route path="/purchases/edit/:id" element={<PurchaseCreate />} />
+              <Route path="/purchase-returns" element={<PurchaseReturns />} />
+              <Route path="/purchase-returns/create" element={<PurchaseReturnCreate />} />
+              <Route path="/purchase-returns/edit/:id" element={<PurchaseReturnCreate />} />
 
 
           <Route path="/sales" element={<Sale />} />
             <Route path="/sales/create" element={<SaleCreate />} />
             <Route path="/sales/edit/:id" element={<SaleCreate />} />
+            <Route path="/sale-returns" element={<SaleReturns />} />
+            <Route path="/sale-returns/create" element={<SaleReturnCreate />} />
+            <Route path="/sale-returns/edit/:id" element={<SaleReturnCreate />} />
           
 
 
