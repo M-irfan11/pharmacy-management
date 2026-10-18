@@ -4,12 +4,6 @@ import Layout from "../Layout.jsx";
 import InvoiceItems from '../InvoiceItems.jsx';
 import axios from '../../LIb/axios.js';
 
-const today = () => {
-    const date = new Date();
-    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-    return date.toISOString().slice(0, 10);
-};
-
 function SaleCreate() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -24,7 +18,7 @@ function SaleCreate() {
     const [sale, setSale] = React.useState({
         customer_name: '',
         invoice_no: '',
-        sale_date: today(),
+        sale_date: '',
         user_id: currentUserId,
     });
     const [medicines, setMedicines] = React.useState([]);
@@ -46,7 +40,7 @@ function SaleCreate() {
                 setSale({
                     customer_name: row.customer_name ?? '',
                     invoice_no: row.invoice_no ?? '',
-                    sale_date: row.sale_date ?? today(),
+                    sale_date: row.sale_date ?? '',
                     user_id: row.user_id ?? currentUserId,
                 });
             } else if (id) {

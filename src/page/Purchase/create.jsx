@@ -1,14 +1,9 @@
-import React from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import Layout from "../Layout.jsx";
 import InvoiceItems from '../InvoiceItems.jsx';
 import axios from '../../LIb/axios.js';
-
-const today = () => {
-    const date = new Date();
-    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-    return date.toISOString().slice(0, 10);
-};
 
 const getUserId = () => {
     try {
@@ -22,60 +17,55 @@ function PurchaseCreate() {
     const { id } = useParams();
     const navigate = useNavigate();
     const currentUserId = getUserId();
-    const [purchase, setPurchase] = React.useState({
+    const [purchase, setPurchase] = useState({
         supplier_id: '',
         invoice_no: '',
-        purchase_date: today(),
+        purchase_date: '',
         user_id: currentUserId,
     });
-    const [suppliers, setSuppliers] = React.useState([]);
-    const [medicines, setMedicines] = React.useState([]);
-    const [items, setItems] = React.useState([]);
-    const [saving, setSaving] = React.useState(false);
+    const [purchaseNo, setPurchaseNo] = useState(0);
+    const [suppliers, setSuppliers] = useState([]);
+    const [medicines, setMedicines] = useState([]);
+    const [items, setItems] = useState([]);
+    const [saving, setSaving] = useState(false);
     const setPurchaseField = (field) => (event) => setPurchase(current => ({ ...current, [field]: event.target.value }));
 
-    React.useEffect(() => {
-        let cancelled = false;
-        Promise.all([
-            axios.get('supplier/index.php'),
-            axios.get('medicines/index.php'),
-            id ? axios.get(`purchase/single.php?id=${id}`) : Promise.resolve(null),
-        ]).then(([supplierResponse, medicineResponse, purchaseResponse]) => {
-            if (cancelled) return;
+    async function fetchPurchase() {
+        let res = await axios.get("Purchase/index.php");
+        if (res.data.data) {
+            setPurchase(res.data.data);
+        }
+    }    
+    async function fetchPoNo() {
+        let res = await axios.get("purchase/get_po_no.php");
+        if (res.data.pur_no) {
+            setPurchaseNo(res.data.pur_no);
+        }
+    }
+    async function fetchSupplier() {
+        let res = await axios.get("supplier/index.php");
+        if (res.data.data) {
+            setSuppliers(res.data.data);
+        }
+    }
+    async function fetchMedicines() {
+        let res = await axios.get("medicines/index.php");
+        if (res.data.data) {
+            setMedicines(res.data.data);
+        }
+    }
 
-            const medicineList = medicineResponse.data?.data || [];
-            const invoice = purchaseResponse?.data?.data?.[0];
-            setSuppliers(supplierResponse.data?.data || []);
-            setMedicines(medicineList);
 
-            if (!invoice) {
-                if (id) alert(purchaseResponse?.data?.message || 'Purchase invoice could not be loaded');
-                return;
-            }
+   
 
-            setPurchase({
-                supplier_id: String(invoice.supplier_id || ''),
-                invoice_no: invoice.invoice_no || '',
-                purchase_date: invoice.purchase_date || today(),
-                user_id: invoice.user_id || currentUserId,
-            });
-            setItems((invoice.items || []).map((item, index) => {
-                const medicine = medicineList.find(row => String(row.id) === String(item.medicine_id));
-                return {
-                    row_id: `${item.id || item.medicine_id}-${index}`,
-                    medicine_id: String(item.medicine_id),
-                    quantity: String(item.quantity),
-                    unit_price: String(item.unit_price),
-                    medicine_name: medicine?.medicine_name || item.medicine_name || `Medicine ${item.medicine_id}`,
-                    stock_qty: medicine?.stock_qty ?? '',
-                };
-            }));
-        }).catch(error => {
-            console.error('Purchase form load error:', error);
-            if (!cancelled) alert(error.response?.data?.message || 'Purchase form data could not be loaded');
-        });
-        return () => { cancelled = true; };
-    }, [id, currentUserId]);
+    useEffect(() => {
+        fetchPoNo();        
+        fetchPurchase();
+        fetchSupplier();
+        fetchMedicines();
+    }, []);
+
+    
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -135,7 +125,7 @@ function PurchaseCreate() {
                                         </select>
                                     </div>
                                     <div className="form-group col-md-4">
-                                        <label htmlFor="invoice_no">Invoice No</label><input id="invoice_no" className="form-control" value={purchase.invoice_no} onChange={setPurchaseField('invoice_no')} required maxLength="50" />
+                                        <label htmlFor="invoice_no">Invoice No</label><input readOnly id="invoice_no" className="form-control" value= {purchaseNo} onChange={setPurchaseField('invoice_no')} required maxLength="50" />
                                     </div>
                                     <div className="form-group col-md-4">
                                         <label htmlFor="purchase_date">Purchase Date</label><input id="purchase_date" type="date" className="form-control" value={purchase.purchase_date} onChange={setPurchaseField('purchase_date')} required />

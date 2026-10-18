@@ -4,51 +4,47 @@ import Layout from "../Layout.jsx";
 import axios from '../../LIb/axios.js';
 
 function Purchase() {
-    const [purchases, setPurchases] = React.useState([]);
+    const [purchases, setPurchase] = React.useState([]);
     const [suppliers, setSuppliers] = React.useState([]);
 
-    const fetchPurchases = async () => {
-        try {
-            const response = await axios.get('purchase/index.php');
-            if (!response.data?.status && response.data?.message !== 'No records found') {
-                throw new Error(response.data?.message || 'Purchases could not be loaded');
-            }
-            setPurchases(response.data?.data || []);
-        } catch (error) {
-            console.error('Purchases fetch error:', error);
-            alert(error.response?.data?.message || error.message || 'Purchases could not be loaded');
-        }
+    const fetchPurchase = async () => {
+
+        let res = await axios.get(`/purchase/index.php`)
+        setPurchase(res.data.data);     
+
+    }
+    const fetchSuppliers = async () => {
+        const res = await axios.get('supplier/index.php')
+        setSuppliers(res.data.data);
     };
 
     React.useEffect(() => {
-        Promise.resolve().then(fetchPurchases);
-        axios.get('supplier/index.php')
-            .then(response => setSuppliers(response.data?.data || []))
-            .catch(error => {
-                console.error('Supplier fetch error:', error);
-                alert(error.response?.data?.message || 'Supplier list could not be loaded');
-            });
+        fetchPurchase();
+        fetchSuppliers();
     }, []);
 
-    const supplierName = (supplierId) => {
-        const supplier = suppliers.find(row => String(row.id) === String(supplierId));
-        return supplier ? supplier.supplier_name : supplierId;
-    };
 
-    async function handleDelete(id) {
-        if (!window.confirm('Delete this purchase invoice and reverse its stock?')) return;
-        try {
-            const response = await axios.delete(`purchase/delete.php?id=${id}`);
-            if (response.data?.status) {
-                await fetchPurchases();
-            } else {
-                alert(response.data?.message || 'Purchase invoice could not be deleted');
-            }
-        } catch (error) {
-            console.error('Purchase delete error:', error);
-            alert(error.response?.data?.message || 'Purchase invoice could not be deleted');
+    async function handleDelete(id, invoiceNo) {
+        if (window.confirm(`Are you sure you want to delete invoice ${invoiceNo}?`)) {
+            const res = await axios.delete(`purchase/delete.php?id=${id}`);
+            if (res.data.status) await fetchPurchases();
         }
     }
+   
+
+    // const supplierName = (supplierId) => {
+    //     const supplier = suppliers.find(row => String(row.id) === String(supplierId));
+    //     return supplier ? supplier.supplier_name : supplierId;
+    // };
+
+    // async function handleDelete(id, puprchaseName) {
+    //     if (window.confirm(`Are you sure you want to delete this ${puprchaseName}?`)) {
+    //         let res = await axios.delete(`/purchase/delete.php?id=${id}`)
+    //         if (res.data.status) {
+    //             await fetchPurchase();
+    //         }
+    //     }
+    // }
 
     return (
         <Layout>
