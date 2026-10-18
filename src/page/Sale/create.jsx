@@ -1,68 +1,58 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import Layout from "../Layout.jsx";
 import InvoiceItems from '../InvoiceItems.jsx';
 import axios from '../../LIb/axios.js';
 
+
+const getUserId = () => {
+    try {
+        return JSON.parse(localStorage.getItem('userdata') || '{}')?.id || '';
+    } catch {
+        return '';
+    }
+};
+
 function SaleCreate() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const currentUserId = (() => {
-        try {
-            return JSON.parse(localStorage.getItem('userdata'))?.id || '';
-        } catch {
-            return '';
-        }
-    })();
-
-    const [sale, setSale] = React.useState({
+    const currentUserId = getUserId();
+    const [sale, setSale] = useState({
         customer_name: '',
         invoice_no: '',
         sale_date: '',
         user_id: currentUserId,
     });
-    const [medicines, setMedicines] = React.useState([]);
-    const [items, setItems] = React.useState([]);
-    const [saving, setSaving] = React.useState(false);
+    const [medicines, setMedicines] = useState([]);
+    const [items, setItems] = useState([]);
+    const [saving, setSaving] = useState(false);
     const setSaleField = (field) => (event) => setSale(current => ({ ...current, [field]: event.target.value }));
 
-    React.useEffect(() => {
-        let active = true;
-        Promise.all([
-            axios.get('medicines/index.php'),
-            id ? axios.get(`sale/single.php?id=${id}`) : Promise.resolve(null),
-        ]).then(([medicineResponse, saleResponse]) => {
-            if (!active) return;
-            const row = saleResponse?.data?.data?.[0];
-            const medicineList = medicineResponse.data?.data || [];
-            setMedicines(medicineList);
-            if (row) {
-                setSale({
-                    customer_name: row.customer_name ?? '',
-                    invoice_no: row.invoice_no ?? '',
-                    sale_date: row.sale_date ?? '',
-                    user_id: row.user_id ?? currentUserId,
-                });
-            } else if (id) {
-                alert(saleResponse?.data?.message || 'Sale invoice could not be loaded');
-            }
-            setItems((row?.items || []).map((item, index) => {
-                const medicine = medicineList.find(entry => String(entry.id) === String(item.medicine_id));
-                return {
-                    row_id: `${item.id || item.medicine_id}-${index}`,
-                    medicine_id: String(item.medicine_id),
-                    quantity: String(item.quantity),
-                    unit_price: String(item.unit_price),
-                    medicine_name: medicine?.medicine_name || item.medicine_name || `Medicine ${item.medicine_id}`,
-                    stock_qty: medicine?.stock_qty ?? '',
-                };
+    async function fetchPoNO() {
+        const res = await axios.get("sales/get_po_no.php");
+
+        if(res.data?.sale_no) {
+            setSale(current => ({
+                ...current,
+                invoice_no: String(res.data.sale_no),
             }));
-        }).catch((error) => {
-            console.error('Sale form load error:', error);
-            if (active) alert(error.response?.data?.message || 'Sale form data could not be loaded');
-        });
-        return () => { active = false; };
-    }, [id, currentUserId]);
+        }else {
+            alert("Invoice number could not be fetched. Please try again.");
+        }
+    }
+
+    async function fetchMedicines() {
+        let res = await axios.get("medicines/index.php");
+            if (res.data?.data) {
+                setMedicines(res.data.data);
+            }
+        }
+
+
+    useEffect(() => {
+        fetchPoNO();
+        fetchMedicines();
+    }, []);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -117,7 +107,7 @@ function SaleCreate() {
                                     </div>
                                     <div className="form-group col-md-4">
                                         <label htmlFor="invoice_no">Invoice No</label>
-                                        <input id="invoice_no" className="form-control" value={sale.invoice_no} onChange={setSaleField('invoice_no')} required maxLength="50" />
+                                        <input id="invoice_no" className="form-control" value={sale.invoice_no} readOnly required maxLength="50" />
                                     </div>
                                     <div className="form-group col-md-4">
                                         <label htmlFor="sale_date">Sale Date</label>

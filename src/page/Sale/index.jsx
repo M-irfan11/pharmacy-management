@@ -6,35 +6,19 @@ import axios from '../../LIb/axios.js';
 function Sale() {
     const [sales, setSales] = React.useState([]);
 
-    const fetchSales = async () => {
-        try {
-            const response = await axios.get('sale/index.php');
-            if (!response.data?.status && response.data?.message !== 'No records found') {
-                throw new Error(response.data?.message || 'Sales could not be loaded');
-            }
-            setSales(response.data?.data || []);
-        } catch (error) {
-            console.error('Sales fetch error:', error);
-            alert(error.response?.data?.message || error.message || 'Sales could not be loaded');
-        }
+    const fetchSale = async () => {
+      let res = await axios.get(`/sale/index.php`)
+        setSales(res.data.data);
     };
 
     React.useEffect(() => {
-        Promise.resolve().then(fetchSales);
+        fetchSale();
     }, []);
 
-    async function handleDelete(id) {
-        if (!window.confirm('Delete this sale invoice and restore its stock?')) return;
-        try {
-            const response = await axios.delete(`sale/delete.php?id=${id}`);
-            if (response.data?.status) {
-                await fetchSales();
-            } else {
-                alert(response.data?.message || 'Sale invoice could not be deleted');
-            }
-        } catch (error) {
-            console.error('Sale delete error:', error);
-            alert(error.response?.data?.message || 'Sale invoice could not be deleted');
+     async function handleDelete(id, invoiceNo) {
+        if (window.confirm(`Are you sure you want to delete invoice ${invoiceNo}?`)) {
+            const res = await axios.delete(`sale/delete.php?id=${id}`);
+            if (res.data.status) await fetchSale();
         }
     }
 

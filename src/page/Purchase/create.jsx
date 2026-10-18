@@ -23,25 +23,37 @@ function PurchaseCreate() {
         purchase_date: '',
         user_id: currentUserId,
     });
-    const [purchaseNo, setPurchaseNo] = useState(0);
     const [suppliers, setSuppliers] = useState([]);
     const [medicines, setMedicines] = useState([]);
     const [items, setItems] = useState([]);
     const [saving, setSaving] = useState(false);
     const setPurchaseField = (field) => (event) => setPurchase(current => ({ ...current, [field]: event.target.value }));
 
-    async function fetchPurchase() {
-        let res = await axios.get("Purchase/index.php");
-        if (res.data.data) {
-            setPurchase(res.data.data);
-        }
-    }    
+        // async function fetchPurchase() {
+        //     let res = await axios.get("Purchase/index.php");
+        //     if (res.data.data) {
+        //         setPurchase(res.data.data);
+        //     }
+        // }    
+    // async function fetchPoNo() {
+    //     let res = await axios.get("purchase/get_po_no.php");
+    //     if (res.data.pur_no) {
+    //         setPurchaseNo(res.data.pur_no);
+    //     }
+    // }
+
     async function fetchPoNo() {
-        let res = await axios.get("purchase/get_po_no.php");
-        if (res.data.pur_no) {
-            setPurchaseNo(res.data.pur_no);
-        }
+    const res = await axios.get("purchase/get_po_no.php");
+
+    if (res.data?.pur_no) {
+        setPurchase(current => ({
+            ...current,
+            invoice_no: String(res.data.pur_no),
+        }));
+    } else {
+        alert("Invoice number could not be fetched. Please try again.");
     }
+}
     async function fetchSupplier() {
         let res = await axios.get("supplier/index.php");
         if (res.data.data) {
@@ -53,14 +65,11 @@ function PurchaseCreate() {
         if (res.data.data) {
             setMedicines(res.data.data);
         }
-    }
-
-
-   
+    }  
 
     useEffect(() => {
         fetchPoNo();        
-        fetchPurchase();
+        // fetchPurchase();
         fetchSupplier();
         fetchMedicines();
     }, []);
@@ -125,7 +134,7 @@ function PurchaseCreate() {
                                         </select>
                                     </div>
                                     <div className="form-group col-md-4">
-                                        <label htmlFor="invoice_no">Invoice No</label><input readOnly id="invoice_no" className="form-control" value= {purchaseNo} onChange={setPurchaseField('invoice_no')} required maxLength="50" />
+                                        <label htmlFor="invoice_no">Invoice No</label><input readOnly id="invoice_no" className="form-control" value= {purchase.invoice_no} required maxLength="50" />
                                     </div>
                                     <div className="form-group col-md-4">
                                         <label htmlFor="purchase_date">Purchase Date</label><input id="purchase_date" type="date" className="form-control" value={purchase.purchase_date} onChange={setPurchaseField('purchase_date')} required />

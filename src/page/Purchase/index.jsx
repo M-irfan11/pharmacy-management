@@ -27,15 +27,15 @@ function Purchase() {
     async function handleDelete(id, invoiceNo) {
         if (window.confirm(`Are you sure you want to delete invoice ${invoiceNo}?`)) {
             const res = await axios.delete(`purchase/delete.php?id=${id}`);
-            if (res.data.status) await fetchPurchases();
+            if (res.data.status) await fetchPurchase();
         }
     }
    
 
-    // const supplierName = (supplierId) => {
-    //     const supplier = suppliers.find(row => String(row.id) === String(supplierId));
-    //     return supplier ? supplier.supplier_name : supplierId;
-    // };
+    const supplierName = (supplierId) => {
+        const supplier = suppliers.find(row => String(row.id) === String(supplierId));
+        return supplier ? supplier.supplier_name : supplierId;
+    };
 
     // async function handleDelete(id, puprchaseName) {
     //     if (window.confirm(`Are you sure you want to delete this ${puprchaseName}?`)) {
@@ -75,7 +75,7 @@ function Purchase() {
                                             <Link to={`/purchases/edit/${purchase.id}`} className="btn btn-sm btn-primary mr-1 !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0" title="Edit invoice">
                                                 <i className="fa fa-pencil"></i>
                                             </Link>
-                                            <button className="btn btn-sm btn-danger" title="Delete invoice" onClick={() => handleDelete(purchase.id)}>
+                                            <button className="btn btn-sm btn-danger" title="Delete invoice" onClick={() => handleDelete(purchase.id, purchase.invoice_no)}>
                                                 <i className="fa fa-trash-o"></i>
                                             </button>
                                         </td>

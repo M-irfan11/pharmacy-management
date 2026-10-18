@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from "../Layout.jsx";
-import { Link, useParams } from 'react-router';
+import { Link, useNavigate, useParams } from 'react-router';
 import axios from '../../LIb/axios.js';
 function CategoryCreate() {
 
