@@ -7,7 +7,7 @@ function Sale() {
     const [sales, setSales] = React.useState([]);
 
     const fetchSale = async () => {
-      let res = await axios.get(`/sale/index.php`)
+      let res = await axios.get(`/sales/index.php`)
         setSales(res.data.data);
     };
 
@@ -17,7 +17,7 @@ function Sale() {
 
      async function handleDelete(id, invoiceNo) {
         if (window.confirm(`Are you sure you want to delete invoice ${invoiceNo}?`)) {
-            const res = await axios.delete(`sale/delete.php?id=${id}`);
+            const res = await axios.delete(`sales/delete.php?id=${id}`);
             if (res.data.status) await fetchSale();
         }
     }

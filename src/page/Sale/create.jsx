@@ -71,7 +71,7 @@ function SaleCreate() {
         formData.append('payload', JSON.stringify(payload));
         setSaving(true);
         try {
-            const response = await axios.post(id ? `sale/update.php?id=${id}` : 'sale/create.php', formData);
+            const response = await axios.post(id ? `sales/update.php?id=${id}` : 'sales/create.php', formData);
             if (!response.data?.status) {
                 alert(response.data?.message || 'Sale could not be saved');
                 return;
