@@ -1,5 +1,5 @@
 import { Link } from "react-router"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Bar, Doughnut } from "react-chartjs-2"
 import {
     Chart as ChartJS,
@@ -10,6 +10,7 @@ import {
     Tooltip,
 } from "chart.js"
 import Layout from './Layout.jsx'
+import axios from '../LIb/axios.js'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Tooltip)
 
@@ -63,12 +64,11 @@ const salesOptions = {
     categoryPercentage: 0.8,
 }
 
-// ---- Dummy data (pore API theke replace korben) ----
-const stats = [
-    { bg: 'dash-widget-bg1', title: 'widget-title1', icon: 'fa fa-medkit', value: '1,248', label: 'Medicines', gradient: '!bg-gradient-to-br from-[#0d6efd] to-[#6610f2]' },
-    { bg: 'dash-widget-bg2', title: 'widget-title2', icon: 'fa fa-users', value: '2,102', label: 'Customers', gradient: '!bg-gradient-to-br from-[#55ce63] to-[#28a745]' },
-    { bg: 'dash-widget-bg3', title: 'widget-title3', icon: 'fa fa-shopping-cart', value: '2,458', label: 'Orders', gradient: '!bg-gradient-to-br from-[#7a92a3] to-[#5c7383]' },
-    { bg: 'dash-widget-bg4', title: 'widget-title4', icon: 'fa fa-exclamation-triangle', value: '36', label: 'Low Stock', gradient: '!bg-gradient-to-br from-[#ffbc35] to-[#ff9800]' },
+const statCards = [
+    { key: 'total_medicines', bg: 'dash-widget-bg1', title: 'widget-title1', icon: 'fa fa-medkit', label: 'Medicines', gradient: '!bg-gradient-to-br from-[#0d6efd] to-[#6610f2]' },
+    { key: 'total_sales', bg: 'dash-widget-bg2', title: 'widget-title2', icon: 'fa fa-shopping-bag', label: 'Sales', gradient: '!bg-gradient-to-br from-[#55ce63] to-[#28a745]', isAmount: true },
+    { key: 'total_purchase', bg: 'dash-widget-bg3', title: 'widget-title3', icon: 'fa fa-shopping-cart', label: 'Purchase', gradient: '!bg-gradient-to-br from-[#7a92a3] to-[#5c7383]', isAmount: true },
+    { key: 'low_stock_count', bg: 'dash-widget-bg4', title: 'widget-title4', icon: 'fa fa-exclamation-triangle', label: 'Low Stock', gradient: '!bg-gradient-to-br from-[#ffbc35] to-[#ff9800]' },
 ]
 
 const latestOrders = [
@@ -84,14 +84,6 @@ const statusClass = {
     Pending: 'btn-primary-four',
     Cancelled: 'btn-primary-two',
 }
-
-const topSelling = [
-    { name: 'Paracetamol', percent: 82 },
-    { name: 'Metformin', percent: 71 },
-    { name: 'Amoxicillin', percent: 67 },
-    { name: 'Omeprazole', percent: 30 },
-    { name: 'Cetirizine', percent: 16 },
-]
 
 const stockAlerts = [
     { name: 'Paracetamol 500mg', note: 'Only 12 strips left', tag: 'Low', icon: 'fa fa-medkit', grad: 'linear-gradient(135deg, #ff8fb8, #ff3d77)', color: '#ef3b5d', tagBg: '#fdeaea' },
@@ -116,6 +108,45 @@ const messages = [
 function Dashboard() {
     const [period, setPeriod] = useState('This Month')
     const [revPeriod, setRevPeriod] = useState('Monthly')
+    const [summary, setSummary] = useState({
+        total_medicines: 0,
+        total_sales: 0,
+        total_purchase: 0,
+        low_stock_count: 0,
+    })
+    const [topSelling, setTopSelling] = useState([])
+    const [dashboardError, setDashboardError] = useState('')
+
+    useEffect(() => {
+        const fetchDashboardSummary = async () => {
+            try {
+                const response = await axios.get('/dashboard/summary.php')
+                if (!response.data?.status) {
+                    throw new Error(response.data?.message || 'Could not load dashboard data.')
+                }
+                setSummary(response.data.data.summary)
+                setTopSelling(response.data.data.top_selling)
+                setDashboardError('')
+            } catch (error) {
+                setDashboardError(error.response?.data?.message || error.message || 'Could not load dashboard data.')
+            }
+        }
+
+        fetchDashboardSummary()
+
+        const refreshOnReturn = () => {
+            if (document.visibilityState === 'visible') {
+                fetchDashboardSummary()
+            }
+        }
+        window.addEventListener('focus', refreshOnReturn)
+        document.addEventListener('visibilitychange', refreshOnReturn)
+
+        return () => {
+            window.removeEventListener('focus', refreshOnReturn)
+            document.removeEventListener('visibilitychange', refreshOnReturn)
+        }
+    }, [])
 
     const revenueValues = revenueByPeriod[revPeriod]
     const totalRevenue = revenueValues.reduce((a, b) => a + b, 0)
@@ -146,13 +177,20 @@ function Dashboard() {
                 <div className="content">
 
                     {/* ===== Top stat widgets ===== */}
+                    {dashboardError && (
+                        <div className="alert alert-danger" role="alert">
+                            Dashboard data could not be loaded: {dashboardError}
+                        </div>
+                    )}
                     <div className="row">
-                        {stats.map((s) => (
+                        {statCards.map((s) => (
                             <div key={s.label} className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                                 <div className="dash-widget">
                                     <span className={`${s.bg} ${s.gradient}`}><i className={s.icon} aria-hidden="true"></i></span>
                                     <div className="dash-widget-info text-right">
-                                        <h3>{s.value}</h3>
+                                        <h3>{s.isAmount
+                                            ? Number(summary[s.key]).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                                            : Number(summary[s.key]).toLocaleString('en-US')}</h3>
                                         <span className={`${s.title} ${s.gradient}`}>{s.label} <i className="fa fa-check" aria-hidden="true"></i></span>
                                     </div>
                                 </div>
@@ -197,10 +235,13 @@ function Dashboard() {
                                     </div>
                                     <div className="bar-chart">
                                         <div className="chart clearfix">
+                                            {topSelling.length === 0 && (
+                                                <p className="text-center text-muted mb-0">No sales this month</p>
+                                            )}
                                             {topSelling.map((m) => (
                                                 <div className="item" key={m.name}>
                                                     <div className="bar !bg-gradient-to-br from-[#ffbc35] to-[#ff9800]">
-                                                        <span className="percent">{m.percent}%</span>
+                                                        <span className="percent">{m.percent}% ({m.quantity})</span>
                                                         <div className="item-progress !bg-gradient-to-br from-[#ffbc35] to-[#ff9800]" data-percent={m.percent}>
                                                             <span className="title">{m.name}</span>
                                                         </div>
