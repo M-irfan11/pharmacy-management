@@ -30,7 +30,7 @@ function AccountsCreate({ section, accounts, onSaved, onError, onNotice }) {
     onError("");
     onNotice("");
     try {
-      await request("accounts/index.php?action=save_account", {
+      await request("accounts/create.php?type=account", {
         method: "POST",
         data: new FormData(formElement),
       });
@@ -60,7 +60,7 @@ function AccountsCreate({ section, accounts, onSaved, onError, onNotice }) {
       const form = new FormData(formElement);
       form.set("voucher_type", section);
       form.set("lines", JSON.stringify(lines));
-      const result = await request("accounts/index.php?action=save_voucher", {
+      const result = await request("accounts/create.php?type=voucher", {
         method: "POST",
         data: form,
       });

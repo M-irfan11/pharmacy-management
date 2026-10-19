@@ -46,12 +46,12 @@ function Accounts() {
   }, []);
 
   const loadAccounts = useCallback(async () => {
-    const result = await request("accounts/index.php?action=accounts");
+    const result = await request("accounts/index.php?view=accounts");
     setAccounts(result);
   }, [request]);
 
   const loadVouchers = useCallback(async () => {
-    const result = await request("accounts/index.php?action=vouchers");
+    const result = await request("accounts/index.php?view=vouchers");
     setVouchers(result);
   }, [request]);
 
@@ -73,7 +73,7 @@ function Accounts() {
       const form = new FormData();
       form.set("voucher_type", voucher.voucher_type);
       form.set("id", voucher.id);
-      await request("accounts/index.php?action=post_voucher", { method: "POST", data: form });
+      await request("accounts/update.php", { method: "POST", data: form });
       setNotice(`${voucher.voucher_no} posted.`);
       await loadVouchers();
     } catch (error) {
@@ -89,7 +89,7 @@ function Accounts() {
     setFormError("");
     try {
       const params = new URLSearchParams(reportFilters);
-      const result = await request(`accounts/index.php?action=ledger&${params.toString()}`);
+      const result = await request(`accounts/index.php?view=ledger&${params.toString()}`);
       setLedger(result);
     } catch (error) {
       setFormError(error.message);
@@ -104,7 +104,7 @@ function Accounts() {
     setFormError("");
     try {
       const params = new URLSearchParams({ from: reportFilters.from, to: reportFilters.to });
-      const result = await request(`accounts/index.php?action=profit_loss&${params.toString()}`);
+      const result = await request(`accounts/index.php?view=profit_loss&${params.toString()}`);
       setProfitLoss(result);
     } catch (error) {
       setFormError(error.message);
