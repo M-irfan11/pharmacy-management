@@ -20,6 +20,11 @@ import CategoryEdit from "./page/categories/Edit.jsx";
 import Protected from './Auth/Protected.jsx';
 
 
+import Users from "./page/users/index.jsx";
+import UserCreate from "./page/users/create.jsx";
+import UserEdit from "./page/users/Edit.jsx";
+
+
 import Medicines from "./page/medicines/index.jsx";
 import MedicinesCreate from "./page/medicines/create.jsx";
 
@@ -107,6 +112,13 @@ function App() {
             <Route index element={<Supplier />} />
             <Route path="create" element={<SupplierCreate />} />
             <Route path="edit/:id" element={<SupplierCreate />} />
+          </Route>
+
+
+          <Route path="users">
+            <Route index element={<Users />} />
+            <Route path="create" element={<UserCreate />} />
+            <Route path="edit/:id" element={<UserEdit />} />
           </Route>
 
           <Route path="*" element={<div style={{ padding: 20 }}>Page not found</div>} />

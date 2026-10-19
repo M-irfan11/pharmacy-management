@@ -52,6 +52,12 @@ function Sidebar() {
                                 <i className="fa fa-reply"></i> <span>Sale Returns</span>
                             </NavLink>
                         </li>
+
+                        <li>
+                            <NavLink to="/users" className={getClass}>
+                                <i className="fa fa-users"></i> <span>Users</span>
+                            </NavLink>
+                        </li>
                        
                         <li className="submenu">
                             <a href="#"><i className="fa fa-user"></i> <span> Employees </span> <span className="menu-arrow"></span></a>

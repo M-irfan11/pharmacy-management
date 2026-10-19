@@ -57,7 +57,7 @@ function SaleReturns() {
                     <div className="row">
                         <div className="col-sm-6"><h4 className="page-title">Sale Returns</h4></div>
                         <div className="col-sm-6 text-right m-b-20">
-                            <Link to="/sale-returns/create" className="btn btn-primary btn-rounded">Create sale return</Link>
+                            <Link to="/sale-returns/create" className="btn !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0 btn-rounded">Create sale return</Link>
                         </div>
                     </div>
                     {error && <div className="alert alert-danger" role="alert">{error}</div>}
@@ -80,7 +80,7 @@ function SaleReturns() {
                                         <td>{Number(item.total || 0).toFixed(2)}</td>
                                         <td>{item.reason || '-'}</td>
                                         <td className="text-nowrap">
-                                            <Link to={`/sale-returns/edit/${item.id}`} className="btn btn-sm btn-primary mr-1" title="Edit sale return">
+                                            <Link to={`/sale-returns/edit/${item.id}`} className="btn btn-sm !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0 mr-1" title="Edit sale return">
                                                 <i className="fa fa-pencil"></i>
                                             </Link>
                                             <button type="button" className="btn btn-sm btn-danger" title="Delete sale return"

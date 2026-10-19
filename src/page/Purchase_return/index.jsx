@@ -57,7 +57,7 @@ function PurchaseReturns() {
                     <div className="row">
                         <div className="col-sm-6"><h4 className="page-title">Purchase Returns</h4></div>
                         <div className="col-sm-6 text-right m-b-20">
-                            <Link to="/purchase-returns/create" className="btn btn-primary btn-rounded">Create purchase return</Link>
+                            <Link to="/purchase-returns/create" className="btn btn-rounded !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0">Create purchase return</Link>
                         </div>
                     </div>
                     {error && <div className="alert alert-danger" role="alert">{error}</div>}
@@ -80,7 +80,7 @@ function PurchaseReturns() {
                                         <td>{Number(item.total || 0).toFixed(2)}</td>
                                         <td>{item.reason || '-'}</td>
                                         <td className="text-nowrap">
-                                            <Link to={`/purchase-returns/edit/${item.id}`} className="btn btn-sm btn-primary mr-1" title="Edit purchase return">
+                                            <Link to={`/purchase-returns/edit/${item.id}`} className="btn btn-sm !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0 mr-1" title="Edit purchase return">
                                                 <i className="fa fa-pencil"></i>
                                             </Link>
                                             <button type="button" className="btn btn-sm btn-danger" title="Delete purchase return"

@@ -244,7 +244,7 @@ function SaleReturnCreate() {
                                             <tfoot><tr><th colSpan="3" className="text-right">Sale return total</th><th>{total.toFixed(2)}</th><th></th></tr></tfoot>
                                         </table>
                                     </div>
-                                    <button type="submit" disabled={saving || !saleId} className="btn btn-primary mt-3">
+                                    <button type="submit" disabled={saving || !saleId} className="btn !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0 mt-3">
                                         {saving ? 'Saving...' : id ? 'Update Sale Return' : 'Save Sale Return'}
                                     </button>
                                 </form>
