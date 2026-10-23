@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import Layout from "../Layout.jsx";
 import axios from '../../LIb/axios.js';
+import InvoiceVoucherActions from "../InvoiceVoucherActions.jsx";
 
 function Purchase() {
     const [purchases, setPurchase] = React.useState([]);
@@ -75,9 +76,16 @@ function Purchase() {
                                             <Link to={`/purchases/edit/${purchase.id}`} className="btn btn-sm btn-primary mr-1 !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0" title="Edit invoice">
                                                 <i className="fa fa-pencil"></i>
                                             </Link>
-                                            <button className="btn btn-sm btn-danger" title="Delete invoice" onClick={() => handleDelete(purchase.id, purchase.invoice_no)}>
+                                            <button className="btn btn-sm !bg-gradient-to-br from-[#D60000] to-[#B70000] !text-white border-0 mr-1" title="Delete invoice" onClick={() => handleDelete(purchase.id, purchase.invoice_no)}>
                                                 <i className="fa fa-trash-o"></i>
                                             </button>
+                                            <InvoiceVoucherActions
+                                                type="purchase"
+                                                invoice={purchase}
+                                                onVoucherCreated={(invoiceId, voucher) => setPurchase((current) => current.map((row) => (
+                                                    String(row.id) === String(invoiceId) ? { ...row, account_voucher: voucher } : row
+                                                )))}
+                                            />
                                         </td>
                                     </tr>
                                 ))}

@@ -11,8 +11,7 @@ import ResetPassword from "./page/ResetPssword.jsx";
 
 import Dashboard from "./page/Dashboard.jsx";
 import Content from "./page/Content.jsx";
-import Patients from "./page/Patients.jsx";
-import Appointment from "./page/Appointment.jsx";
+
 
 import Categories from "./page/categories/index.jsx";
 import CategoryCreate from "./page/categories/create.jsx";
@@ -72,8 +71,6 @@ function App() {
         <Route element={<Protected isSignedIn={isSignedIn} />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/content" element={<Content />} />          
-          <Route path="/patients" element={<Patients />} />
-          <Route path="/appointment" element={<Appointment />} />
           <Route path="/profile" element={<Profile />} />
 
           <Route path="categories">

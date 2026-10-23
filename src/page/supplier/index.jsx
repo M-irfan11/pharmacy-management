@@ -83,7 +83,7 @@ function Supplier() {
                                                             <i className="fa fa-pencil"></i>
                                                         </Link>
                                                         <button
-                                                            className="btn btn-sm btn-danger !bg-gradient-to-br from-[#dc3545] to-[#6c757d] !text-white border-0"
+                                                            className="btn btn-sm !bg-gradient-to-br from-[#D60000] to-[#B70000] !text-white border-0 mr-1"
                                                             title="Delete"
                                                             onClick={() => handleDelete(supplier.id)}
                                                         >

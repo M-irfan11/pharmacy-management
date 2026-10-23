@@ -98,7 +98,7 @@ function InvoiceItems({ type, medicines, items, setItems }) {
                                         onChange={event => updateItem(item.row_id, 'unit_price', event.target.value)} />
                                 </td>
                                 <td>{(Number(item.quantity) * Number(item.unit_price)).toFixed(2)}</td>
-                                <td><button type="button" className="btn btn-sm btn-danger"
+                                <td><button type="button" className="btn btn-sm !bg-gradient-to-br from-[#D60000] to-[#B70000] !text-white border-0 mr-1"
                                     onClick={() => removeItem(item.row_id)}>Remove</button></td>
                             </tr>
                         ))}

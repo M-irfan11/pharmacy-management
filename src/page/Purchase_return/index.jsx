@@ -83,7 +83,7 @@ function PurchaseReturns() {
                                             <Link to={`/purchase-returns/edit/${item.id}`} className="btn btn-sm !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0 mr-1" title="Edit purchase return">
                                                 <i className="fa fa-pencil"></i>
                                             </Link>
-                                            <button type="button" className="btn btn-sm btn-danger" title="Delete purchase return"
+                                            <button type="button" className="btn btn-sm !bg-gradient-to-br from-[#D60000] to-[#B70000] !text-white border-0 mr-1" title="Delete purchase return"
                                                 onClick={() => handleDelete(item)}>
                                                 <i className="fa fa-trash-o"></i>
                                             </button>

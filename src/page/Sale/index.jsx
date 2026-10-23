@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import Layout from "../Layout.jsx";
 import axios from '../../LIb/axios.js';
+import InvoiceVoucherActions from "../InvoiceVoucherActions.jsx";
 
 function Sale() {
     const [sales, setSales] = React.useState([]);
@@ -51,9 +52,16 @@ function Sale() {
                                             <Link to={`/sales/edit/${sale.id}`} className="btn btn-sm btn-primary mr-1 !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0" title="Edit invoice">
                                                 <i className="fa fa-pencil"></i>
                                             </Link>
-                                            <button className="btn btn-sm btn-danger" title="Delete invoice" onClick={() => handleDelete(sale.id)}>
+                                            <button className="btn btn-sm !bg-gradient-to-br from-[#D60000] to-[#B70000] !text-white border-0 mr-1" title="Delete invoice" onClick={() => handleDelete(sale.id)}>
                                                 <i className="fa fa-trash-o"></i>
                                             </button>
+                                            <InvoiceVoucherActions
+                                                type="sale"
+                                                invoice={sale}
+                                                onVoucherCreated={(invoiceId, voucher) => setSales((current) => current.map((row) => (
+                                                    String(row.id) === String(invoiceId) ? { ...row, account_voucher: voucher } : row
+                                                )))}
+                                            />
                                         </td>
                                     </tr>
                                 ))}

@@ -1,4 +1,5 @@
 import { Link } from "react-router"
+import { useLocation } from "react-router"
 import { useEffect, useState } from "react"
 import { Bar, Doughnut } from "react-chartjs-2"
 import {
@@ -30,9 +31,9 @@ const makeGradient = (context, i) => {
     return g
 }
 const revenueByPeriod = {
-    'Monthly': [380, 310, 160],
-    'Weekly': [90, 70, 40],
-    'Yearly': [4200, 3600, 1900],
+    'Monthly': [18000, 10010, 11060],
+    'Weekly': [7000, 9000, 8000],
+    'Yearly': [420000, 360000, 190000],
 }
 const donutOptions = {
     responsive: true,
@@ -94,9 +95,9 @@ const stockAlerts = [
 ]
 
 const payments = [
-    { title: 'Completed Payment', revenue: '$25,000', count: 200, icon: 'fa fa-check', color: '#11b76b', grad: 'linear-gradient(135deg, #43e97b, #11b76b)', glow: 'rgba(17,183,107,0.35)' },
-    { title: 'Pending Payments', revenue: '$10,000', count: 40, icon: 'fa fa-exclamation-triangle', color: '#f59e0b', grad: 'linear-gradient(135deg, #ffd452, #f59e0b)', glow: 'rgba(245,158,11,0.35)' },
-    { title: 'Failed Payments', revenue: '$5,000', count: 5, icon: 'fa fa-times', color: '#ef3b5d', grad: 'linear-gradient(135deg, #ff7a8a, #ef3b5d)', glow: 'rgba(239,59,93,0.35)' },
+    { title: 'Completed Payment', revenue: '৳55,000', count: 200, icon: 'fa fa-check', color: '#11b76b', grad: 'linear-gradient(135deg, #43e97b, #11b76b)', glow: 'rgba(17,183,107,0.35)' },
+    { title: 'Pending Payments', revenue: '৳35,000', count: 40, icon: 'fa fa-exclamation-triangle', color: '#f59e0b', grad: 'linear-gradient(135deg, #ffd452, #f59e0b)', glow: 'rgba(245,158,11,0.35)' },
+    { title: 'Failed Payments', revenue: '৳27,000', count: 5, icon: 'fa fa-times', color: '#ef3b5d', grad: 'linear-gradient(135deg, #ff7a8a, #ef3b5d)', glow: 'rgba(239,59,93,0.35)' },
 ]
 
 const messages = [
@@ -106,6 +107,7 @@ const messages = [
 ]
 
 function Dashboard() {
+    const location = useLocation()
     const [period, setPeriod] = useState('This Month')
     const [revPeriod, setRevPeriod] = useState('Monthly')
     const [summary, setSummary] = useState({
@@ -148,6 +150,17 @@ function Dashboard() {
         }
     }, [])
 
+    useEffect(() => {
+        if (!location.hash) return
+
+        const targetId = decodeURIComponent(location.hash.slice(1))
+        const target = document.getElementById(targetId)
+        if (!target) return
+
+        const top = target.getBoundingClientRect().top + window.scrollY - 64
+        window.scrollTo({ top, behavior: 'smooth' })
+    }, [location.hash])
+
     const revenueValues = revenueByPeriod[revPeriod]
     const totalRevenue = revenueValues.reduce((a, b) => a + b, 0)
     const donutData = {
@@ -184,12 +197,12 @@ function Dashboard() {
                     )}
                     <div className="row">
                         {statCards.map((s) => (
-                            <div key={s.label} className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                            <div key={s.label} id={`dashboard-${s.label.toLowerCase().replace(/\s+/g, '-')}`} className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                                 <div className="dash-widget">
                                     <span className={`${s.bg} ${s.gradient}`}><i className={s.icon} aria-hidden="true"></i></span>
                                     <div className="dash-widget-info text-right">
                                         <h3>{s.isAmount
-                                            ? Number(summary[s.key]).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                                            ? `৳${Number(summary[s.key]).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                                             : Number(summary[s.key]).toLocaleString('en-US')}</h3>
                                         <span className={`${s.title} ${s.gradient}`}>{s.label} <i className="fa fa-check" aria-hidden="true"></i></span>
                                     </div>
@@ -201,7 +214,7 @@ function Dashboard() {
                     {/* ===== Sales Analytics + Top Selling ===== */}
                     <div className="row">
                         <div className="col-12 col-md-6 col-lg-8 col-xl-8">
-                            <div className="card">
+                            <div className="card" id="dashboard-sales-analytics">
                                 <div className="card-body">
                                     <div className="chart-title">
                                         <h4>Sales Analytics</h4>
@@ -223,7 +236,7 @@ function Dashboard() {
                             </div>
                         </div>
                         <div className="col-12 col-md-6 col-lg-4 col-xl-4">
-                            <div className="card">
+                            <div className="card" id="dashboard-top-selling">
                                 <div className="card-body">
                                     <div className="chart-title">
                                         <h4>Top Selling</h4>
@@ -258,7 +271,7 @@ function Dashboard() {
                     {/* ===== Latest Orders + Stock Alerts ===== */}
                     <div className="row">
                         <div className="col-12 col-md-6 col-lg-8 col-xl-8">
-                            <div className="card">
+                            <div className="card" id="dashboard-latest-orders">
                                 <div className="card-header">
                                     <h4 className="card-title d-inline-block">Latest Orders</h4>
                                     <Link to="/orders" className="btn btn-primary float-right !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0">View all</Link>
@@ -301,7 +314,7 @@ function Dashboard() {
                         </div>
 
                         <div className="col-12 col-md-6 col-lg-4 col-xl-4">
-                            <div className="card member-panel">
+                            <div className="card member-panel" id="dashboard-stock-alerts">
                                 <div className="card-header bg-white">
                                     <h4 className="card-title mb-0">Stock Alerts</h4>
                                 </div>
@@ -346,7 +359,7 @@ function Dashboard() {
                     {/* ===== Orders chart + Customers ===== */}
                     <div className="row">
                         <div className="col-12 col-md-6 col-lg-6 col-xl-6">
-                            <div className="card">
+                            <div className="card" id="dashboard-revenue-by-category">
                                 <div className="card-body">
                                     <div className="chart-title">
                                         <h4>Revenue By Category</h4>
@@ -370,7 +383,7 @@ function Dashboard() {
                                                 transform: 'translate(-50%, -50%)', pointerEvents: 'none',
                                             }}
                                         >
-                                            <h3 className="mb-0" style={{ fontWeight: 700, fontSize: '28px', color: '#009ec3' }}>${totalRevenue.toLocaleString()}</h3>
+                                            <h3 className="mb-0" style={{ fontWeight: 700, fontSize: '28px', color: '#009ec3' }}>৳{totalRevenue.toLocaleString()}</h3>
                                             <span className="text-muted" style={{ fontSize: '13px' }}>Revenue</span>
                                         </div>
                                     </div>
@@ -392,7 +405,7 @@ function Dashboard() {
                             </div>
                         </div>
                         <div className="col-12 col-md-6 col-lg-6 col-xl-6">
-                            <div className="card">
+                            <div className="card" id="dashboard-new-customers">
                                 <div className="card-header">
                                     <h4 className="card-title d-inline-block">New Customers</h4>
                                     <Link to="/customers" className="btn btn-primary float-right !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0">View all</Link>
@@ -404,37 +417,37 @@ function Dashboard() {
                                                 <tr>
                                                     <td>
                                                         <img width="28" height="28" className="rounded-circle" src="assets/img/user.jpg" alt="" />
-                                                        <h2>John Doe</h2>
+                                                        <h2>Hanzalah</h2>
                                                     </td>
-                                                    <td>johndoe21@gmail.com</td>
-                                                    <td>+1-202-555-0125</td>
+                                                    <td>Hanzalah@gmail.com</td>
+                                                    <td>+88-202-555-0125</td>
                                                     <td><button className="btn btn-primary btn-primary-one float-right hover:!bg-gradient-to-br hover:from-[#0d6efd] hover:to-[#6610f2] hover:!text-white hover:!border-transparent">Regular</button></td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <img width="28" height="28" className="rounded-circle" src="assets/img/user.jpg" alt="" />
-                                                        <h2>Richard</h2>
+                                                        <h2>Daniyal</h2>
                                                     </td>
-                                                    <td>richard123@yahoo.com</td>
-                                                    <td>202-555-0127</td>
+                                                    <td>Daniyal3@yahoo.com</td>
+                                                    <td>+882-555-0127</td>
                                                     <td><button className="btn btn-primary btn-primary-two float-right hover:!bg-gradient-to-br hover:from-[#0d6efd] hover:to-[#6610f2] hover:!text-white hover:!border-transparent">Wholesale</button></td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <img width="28" height="28" className="rounded-circle" src="assets/img/user.jpg" alt="" />
-                                                        <h2>William</h2>
+                                                        <h2>Ghaalib</h2>
                                                     </td>
-                                                    <td>william@yahoo.com</td>
-                                                    <td>+1-202-555-0106</td>
+                                                    <td>Ghaalib@yahoo.com</td>
+                                                    <td>+88-202-555-0106</td>
                                                     <td><button className="btn btn-primary btn-primary-three float-right hover:!bg-gradient-to-br hover:from-[#0d6efd] hover:to-[#6610f2] hover:!text-white hover:!border-transparent">Regular</button></td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <img width="28" height="28" className="rounded-circle" src="assets/img/user.jpg" alt="" />
-                                                        <h2>Martin</h2>
+                                                        <h2>Khizir</h2>
                                                     </td>
-                                                    <td>martin@yahoo.com</td>
-                                                    <td>776-2323 89562015</td>
+                                                    <td>Khizir@yahoo.com</td>
+                                                    <td>+886-2323 89562015</td>
                                                     <td><button className="btn btn-primary btn-primary-four float-right hover:!bg-gradient-to-br hover:from-[#0d6efd] hover:to-[#6610f2] hover:!text-white hover:!border-transparent">Walk-in</button></td>
                                                 </tr>
                                             </tbody>
@@ -449,7 +462,11 @@ function Dashboard() {
                     <div className="row">
                         {payments.map((p) => (
                             <div key={p.title} className="col-12 col-md-6 col-lg-4 col-xl-4">
-                                <div className="card" style={{ borderTop: `4px solid ${p.color}`, boxShadow: `0 6px 18px ${p.glow}` }}>
+                                <div
+                                    className="card"
+                                    id={`dashboard-${p.title.toLowerCase().replace(/\s+/g, '-')}`}
+                                    style={{ borderTop: `4px solid ${p.color}`, boxShadow: `0 6px 18px ${p.glow}` }}
+                                >
                                     <div className="card-body">
                                         <div className="d-flex align-items-center justify-content-between mb-3">
                                             <div className="d-flex align-items-center">

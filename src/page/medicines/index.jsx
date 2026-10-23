@@ -81,7 +81,7 @@ function Medicines() {
                                                             <i className="fa fa-pencil"></i>
                                                         </Link>
                                                         <button
-                                                            className="btn btn-sm btn-danger"
+                                                            className="btn btn-sm !bg-gradient-to-br from-[#D60000] to-[#B70000] !text-white border-0 mr-1"
                                                             title="Delete"
                                                             onClick={() => handleDelete(medicine.id)}
                                                         >
