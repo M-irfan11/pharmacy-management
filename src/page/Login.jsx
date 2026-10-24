@@ -46,7 +46,7 @@ function Login() {
                   <span className="inline-flex h-[60px] w-[60px] items-center justify-center rounded-full !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white">
                     <i className="fa fa-medkit text-3xl" aria-hidden="true"></i>
                   </span>
-              </Link>
+                </Link>
               </div>
               <div className="form-group">
                 <label htmlFor="email">Username or Email</label>
