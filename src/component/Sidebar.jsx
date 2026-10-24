@@ -133,14 +133,10 @@ function Sidebar() {
 
                         
                        
-                        <li className="submenu">
-                            <a href="#"><i className="fa fa-user"></i> <span> Employees </span> </a>
-                            <ul style={{display: 'none' }}>
-                                <li><a href="employees.html">Employees List</a></li>
-                                <li><a href="leaves.html">Leaves</a></li>
-                                <li><a href="holidays.html">Holidays</a></li>
-                                <li><a href="attendance.html">Attendance</a></li>
-                            </ul>
+                        <li>
+                            <NavLink to="/employees" className={getClass}>
+                                <i className="fa fa-user"></i> <span>Employees</span>
+                            </NavLink>
                         </li>
                         {/* <li className="menu-title">Accounts</li> */}
                        
