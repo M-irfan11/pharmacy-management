@@ -9,7 +9,8 @@ const emptyEmployee = {
   phone: "",
   nid_number: "",
   designation: "",
-  department: "",
+  // department: "",
+  basic_salary: "",
   join_date: "",
   status: "Active",
 };
@@ -20,9 +21,20 @@ function EmployeeForm() {
   const navigate = useNavigate();
   const [employee, setEmployee] = useState(emptyEmployee);
   const [photo, setPhoto] = useState(null);
+  const [photoPreview, setPhotoPreview] = useState("");
   const [loading, setLoading] = useState(editing);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!photo) {
+      setPhotoPreview(employee.photo_path || "");
+      return undefined;
+    }
+    const previewUrl = URL.createObjectURL(photo);
+    setPhotoPreview(previewUrl);
+    return () => URL.revokeObjectURL(previewUrl);
+  }, [employee.photo_path, photo]);
 
   useEffect(() => {
     if (!editing) return undefined;
@@ -93,7 +105,7 @@ function EmployeeForm() {
                       ["phone", "Phone", 20],
                       ["nid_number", "NID Number", 30],
                       ["designation", "Designation", 100],
-                      ["department", "Department", 100],
+                      // ["department", "Department", 100],
                     ].map(([name, label, maxLength]) => (
                       <div className="col-md-6" key={name}>
                         <div className="form-group">
@@ -110,6 +122,21 @@ function EmployeeForm() {
                         </div>
                       </div>
                     ))}
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="basic_salary">Basic Salary</label>
+                        <input
+                          className="form-control"
+                          id="basic_salary"
+                          name="basic_salary"
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          value={employee.basic_salary ?? ""}
+                          onChange={updateField}
+                        />
+                      </div>
+                    </div>
                     <div className="col-md-6">
                       <div className="form-group">
                         <label htmlFor="join_date">Join Date</label>
@@ -130,13 +157,21 @@ function EmployeeForm() {
                         <label htmlFor="photo">Photo</label>
                         <input className="form-control" id="photo" type="file" accept="image/jpeg,image/png,image/gif,image/webp" onChange={(event) => setPhoto(event.target.files?.[0] || null)} />
                         {employee.photo_path && <small className="form-text text-muted">Existing photo is kept unless you choose a new one.</small>}
+                        {photoPreview && (
+                          <img
+                            className="mt-2 rounded"
+                            src={photoPreview}
+                            alt="Employee profile preview"
+                            style={{ width: 96, height: 96, objectFit: "cover" }}
+                          />
+                        )}
                       </div>
                     </div>
                   </div>
-                  <button className="btn btn-primary mr-2" type="submit" disabled={saving}>
+                  <button className="btn !bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0 mr-2" type="submit" disabled={saving}>
                     {saving ? "Saving..." : "Save Employee"}
                   </button>
-                  <Link className="btn btn-light" to="/employees">Cancel</Link>
+                  <Link className="btn !bg-gradient-to-br from-[#D60000] to-[#B70000] !text-white border-0 " to="/employees">Cancel</Link>
                 </form>
               )}
             </div>
