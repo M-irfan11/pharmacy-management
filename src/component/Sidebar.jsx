@@ -36,6 +36,11 @@ function Sidebar() {
                             </NavLink>
                         </li>
                         <li>
+                            <NavLink to="/reports" className={getClass}>
+                                <i className="fa fa-bar-chart"></i> <span>Core Reports</span>
+                            </NavLink>
+                        </li>
+                        <li>
                             <NavLink to="/supplier" className={getClass}>
                                 <i className="fa fa-truck"></i> <span>Supplier</span>
                             </NavLink>

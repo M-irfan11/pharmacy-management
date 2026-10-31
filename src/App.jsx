@@ -38,6 +38,7 @@ import PurchaseReturnCreate from './page/Purchase_return/create.jsx';
 import SaleReturns from './page/Sale_return/index.jsx';
 import SaleReturnCreate from './page/Sale_return/create.jsx';
 import Accounts from "./page/Accounts/index.jsx";
+import Reports from "./page/Reports/index.jsx";
 
 
 
@@ -106,6 +107,7 @@ function App() {
 
             <Route path="/accounts" element={<Navigate to="/accounts/heads" replace />} />
             <Route path="/accounts/:section" element={<Accounts />} />
+            <Route path="/reports" element={<Reports />} />
           
 
 
