@@ -138,11 +138,187 @@ function Reports() {
     };
 
     const renderValue = (value, isMoney = false) => isMoney ? money(value) : value;
+    const reportTitles = {
+        purchase: 'Purchase Report',
+        sale: 'Sales Report',
+        return: 'Return Report',
+        stock: 'Medicine Stock Report',
+    };
+    const printedAt = new Date().toLocaleString();
 
     return (
         <Layout>
             <div className="page-wrapper">
                 <div className="content">
+                    <style>{`
+                        .report-print-header {
+                            display: none;
+                        }
+                        .report-print-summary {
+                            display: none;
+                        }
+                        @media print {
+                            @page {
+                                margin: 10mm;
+                            }
+                            body * {
+                                visibility: hidden;
+                            }
+                            .report-print-header,
+                            .report-print-header *,
+                            .report-print-table,
+                            .report-print-table *,
+                            .report-print-summary,
+                            .report-print-summary * {
+                                visibility: visible;
+                            }
+                            .report-print-header {
+                                display: flex;
+                                position: relative;
+                                width: 100%;
+                                align-items: center;
+                                gap: 12px;
+                                margin: 0 0 14px;
+                                padding: 10px 12px;
+                                border: 1px solid #d8e4f8;
+                                border-bottom: 3px solid #6610f2;
+                                background: linear-gradient(135deg, #f7faff 0%, #f4f0ff 100%);
+                            }
+                            .report-print-header img {
+                                width: 54px;
+                                height: 54px;
+                                object-fit: contain;
+                                border-radius: 8px;
+                            }
+                            .report-print-brand {
+                                text-align: left;
+                            }
+                            .report-print-brand h1 {
+                                margin: 0;
+                                color: #0d6efd;
+                                font-size: 21px;
+                                line-height: 1.15;
+                                font-weight: 700;
+                            }
+                            .report-print-brand h2 {
+                                margin: 4px 0 0;
+                                color: #6610f2;
+                                font-size: 14px;
+                                line-height: 1.15;
+                                font-weight: 700;
+                            }
+                            .report-print-meta {
+                                margin-left: auto;
+                                text-align: right;
+                                color: #4b5563;
+                                font-size: 10px;
+                                line-height: 1.7;
+                            }
+                            .report-print-table {
+                                position: relative;
+                                width: 100%;
+                            }
+                            .report-print-summary {
+                                display: grid;
+                                position: relative;
+                                grid-template-columns: repeat(3, 1fr);
+                                gap: 8px;
+                                width: 100%;
+                                margin: 0 0 14px;
+                            }
+                            .report-print-summary div {
+                                padding: 8px 10px;
+                                border: 1px solid #d8e4f8;
+                                border-top: 3px solid #0d6efd;
+                                background: #ffffff;
+                            }
+                            .report-print-summary small {
+                                display: block;
+                                color: #6b7280;
+                                font-size: 9px;
+                            }
+                            .report-print-summary strong {
+                                display: block;
+                                margin-top: 2px;
+                                color: #212529;
+                                font-size: 13px;
+                            }
+                            .header,
+                            .sidebar,
+                            .footer,
+                            .page-wrapper .row.mb-3,
+                            .report-filter-card,
+                            .report-tabs,
+                            .report-summary,
+                            .btn,
+                            button,
+                            .alert,
+                            input,
+                            label {
+                                display: none !important;
+                            }
+                            .page-wrapper {
+                                margin: 0 !important;
+                                padding: 0 !important;
+                            }
+                            .content {
+                                margin: 0 !important;
+                                padding: 0 !important;
+                            }
+                            .table-responsive {
+                                overflow: visible !important;
+                            }
+                            table {
+                                width: 100% !important;
+                                font-size: 11px;
+                                border-collapse: collapse !important;
+                                color: #212529;
+                            }
+                            thead {
+                                display: table-header-group;
+                            }
+                            table thead th {
+                                padding: 8px 6px !important;
+                                border: 1px solid #cbd5e1 !important;
+                                background: #edf4ff !important;
+                                color: #1e3a8a !important;
+                                font-weight: 700 !important;
+                                -webkit-print-color-adjust: exact;
+                                print-color-adjust: exact;
+                            }
+                            table tbody td {
+                                padding: 7px 6px !important;
+                                border: 1px solid #dbe3ef !important;
+                            }
+                            tr {
+                                page-break-inside: avoid;
+                            }
+                        }
+                    `}</style>
+                    <div className="report-print-header">
+                        <img src={`${import.meta.env.BASE_URL}assets/img/logo.png`} alt="Easmin Pharma logo" />
+                        <div className="report-print-brand">
+                            <h1>Easmin Pharma</h1>
+                            <h2>{reportTitles[activeTab]}</h2>
+                        </div>
+                        <div className="report-print-meta">
+                            <div>Printed: {printedAt}</div>
+                            <div>{fromDate ? `From: ${fromDate}` : 'From: All dates'}</div>
+                            <div>{toDate ? `To: ${toDate}` : 'To: All dates'}</div>
+                        </div>
+                    </div>
+                    <div className="report-print-summary">
+                        {[
+                            { label: summary.label1, value: summary.value1, money: false },
+                            { label: summary.label2, value: summary.value2, money: false },
+                            { label: summary.label3, value: summary.value3, money: typeof summary.value3 === 'number' && summary.label3 !== 'Stock Quantity' },
+                        ].map((card) => (
+                            <div key={card.label}>
+                                <small>{card.label}</small>
+                                <strong>{renderValue(card.value, card.money)}</strong>
+                            </div>
+                        ))}
+                    </div>
                     <div className="row mb-3">
                         <div className="col-sm-6"><h4 className="page-title">Core Reports</h4></div>
                         <div className="col-sm-6 text-right">
@@ -151,7 +327,7 @@ function Reports() {
                         </div>
                     </div>
                     {error && <div className="alert alert-danger">{error}</div>}
-                    <div className="card mb-3">
+                    <div className="card mb-3 report-filter-card">
                         <div className="card-body">
                             <div className="row">
                                 <div className="col-md-3"><label>From Date</label><input type="date" className="form-control" value={fromDate} onChange={(e) => setFromDate(e.target.value)} /></div>
@@ -161,7 +337,7 @@ function Reports() {
                             </div>
                         </div>
                     </div>
-                    <div className="mb-3" aria-label="Report sections">
+                    <div className="mb-3 report-tabs" aria-label="Report sections">
                         {[['purchase','Purchase'],['sale','Sales'],['return','Returns'],['stock','Medicine Stock']].map(([key,label]) => (
                             <button
                                 type="button"
@@ -174,13 +350,13 @@ function Reports() {
                             </button>
                         ))}
                     </div>
-                    <div className="row">
+                    <div className="row report-summary">
                         {[{label:summary.label1,value:summary.value1,money:false},{label:summary.label2,value:summary.value2,money:false},{label:summary.label3,value:summary.value3,money:typeof summary.value3 === 'number' && summary.label3 !== 'Stock Quantity'}].map((card) => (
                             <div className="col-md-4" key={card.label}><div className="card mb-3"><div className="card-body"><small className="text-muted">{card.label}</small><h4>{renderValue(card.value, card.money)}</h4></div></div></div>
                         ))}
                     </div>
                     {loading ? <div className="text-center p-4">Loading report...</div> : (
-                        <div className="table-responsive">
+                        <div className="table-responsive report-print-table">
                             {activeTab === 'stock' ? (
                                 <table className="table table-striped custom-table mb-0"><thead><tr><th>#</th><th>Medicine</th><th>Batch No</th><th>Purchase Price</th><th>Selling Price</th><th>Stock</th><th>Expiry Date</th></tr></thead><tbody>
                                     {!stockRows.length && <tr><td colSpan="7" className="text-center">No medicines found</td></tr>}
