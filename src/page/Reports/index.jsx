@@ -161,11 +161,19 @@ function Reports() {
                             </div>
                         </div>
                     </div>
-                    <ul className="nav nav-tabs mb-3">
+                    <div className="mb-3" aria-label="Report sections">
                         {[['purchase','Purchase'],['sale','Sales'],['return','Returns'],['stock','Medicine Stock']].map(([key,label]) => (
-                            <li className="nav-item" key={key}><button type="button" className={`nav-link ${activeTab === key ? 'active' : ''}`} onClick={() => setActiveTab(key)}>{label}</button></li>
+                            <button
+                                type="button"
+                                key={key}
+                                className={`btn btn-sm mr-2 mb-2 ${activeTab === key ? '!bg-gradient-to-br from-[#0d6efd] to-[#6610f2] !text-white border-0' : 'btn-outline-primary'}`}
+                                aria-pressed={activeTab === key}
+                                onClick={() => setActiveTab(key)}
+                            >
+                                {label}
+                            </button>
                         ))}
-                    </ul>
+                    </div>
                     <div className="row">
                         {[{label:summary.label1,value:summary.value1,money:false},{label:summary.label2,value:summary.value2,money:false},{label:summary.label3,value:summary.value3,money:typeof summary.value3 === 'number' && summary.label3 !== 'Stock Quantity'}].map((card) => (
                             <div className="col-md-4" key={card.label}><div className="card mb-3"><div className="card-body"><small className="text-muted">{card.label}</small><h4>{renderValue(card.value, card.money)}</h4></div></div></div>
