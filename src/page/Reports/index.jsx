@@ -15,7 +15,7 @@ function Reports() {
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
     const [search, setSearch] = useState('');
-    const [lowStockLimit, setLowStockLimit] = useState('10');
+    const [lowStockLimit, setLowStockLimit] = useState('');
     const [purchases, setPurchases] = useState([]);
     const [sales, setSales] = useState([]);
     const [purchaseReturns, setPurchaseReturns] = useState([]);
@@ -111,9 +111,14 @@ function Reports() {
         return matchesTab && (!lowStockLimit || Number(medicine.stock_qty || 0) <= limit);
     }), [medicines, searchText, lowStockLimit]);
 
+    const lowStockRows = useMemo(() => medicines.filter((medicine) => {
+        const matchesSearch = !searchText || `${medicine.medicine_name} ${medicine.batch_no || ''}`.toLowerCase().includes(searchText);
+        return matchesSearch && Number(medicine.stock_qty || 0) <= 10;
+    }), [medicines, searchText]);
+
     const totalFor = (rows) => rows.reduce((sum, row) => sum + Number(row.amount || 0), 0);
     const summary = activeTab === 'stock'
-        ? { label1: 'Medicines', value1: stockRows.length, label2: 'Low Stock', value2: stockRows.length, label3: 'Stock Quantity', value3: stockRows.reduce((sum, row) => sum + Number(row.stock_qty || 0), 0) }
+        ? { label1: 'Medicines', value1: stockRows.length, label2: 'Low Stock', value2: lowStockRows.length, label3: 'Stock Quantity', value3: stockRows.reduce((sum, row) => sum + Number(row.stock_qty || 0), 0) }
         : activeTab === 'purchase'
             ? { label1: 'Items', value1: purchaseRows.length, label2: 'Quantity', value2: purchaseRows.reduce((sum, row) => sum + row.quantity, 0), label3: 'Total Purchase', value3: totalFor(purchaseRows) }
             : activeTab === 'sale'
@@ -333,7 +338,7 @@ function Reports() {
                                 <div className="col-md-3"><label>From Date</label><input type="date" className="form-control" value={fromDate} onChange={(e) => setFromDate(e.target.value)} /></div>
                                 <div className="col-md-3"><label>To Date</label><input type="date" className="form-control" value={toDate} onChange={(e) => setToDate(e.target.value)} /></div>
                                 <div className="col-md-4"><label>Search</label><input type="search" className="form-control" placeholder="Invoice, medicine, party..." value={search} onChange={(e) => setSearch(e.target.value)} /></div>
-                                {activeTab === 'stock' && <div className="col-md-2"><label>Low Stock ≤</label><input type="number" min="0" className="form-control" value={lowStockLimit} onChange={(e) => setLowStockLimit(e.target.value)} /></div>}
+                                {activeTab === 'stock' && <div className="col-md-2"><label>Low Stock ≤</label><input type="number" min="0" placeholder="All stock" className="form-control" value={lowStockLimit} onChange={(e) => setLowStockLimit(e.target.value)} /></div>}
                             </div>
                         </div>
                     </div>
@@ -360,7 +365,7 @@ function Reports() {
                             {activeTab === 'stock' ? (
                                 <table className="table table-striped custom-table mb-0"><thead><tr><th>#</th><th>Medicine</th><th>Batch No</th><th>Purchase Price</th><th>Selling Price</th><th>Stock</th><th>Expiry Date</th></tr></thead><tbody>
                                     {!stockRows.length && <tr><td colSpan="7" className="text-center">No medicines found</td></tr>}
-                                    {stockRows.map((row, index) => <tr key={row.id}><td>{index + 1}</td><td>{row.medicine_name}</td><td>{row.batch_no || '-'}</td><td>{money(row.purchase_price)}</td><td>{money(row.selling_price)}</td><td><span className={Number(row.stock_qty) <= Math.max(0, Number(lowStockLimit || 0)) ? 'badge badge-danger' : ''}>{row.stock_qty}</span></td><td>{row.expiry_date || '-'}</td></tr>)}
+                                    {stockRows.map((row, index) => <tr key={row.id}><td>{index + 1}</td><td>{row.medicine_name}</td><td>{row.batch_no || '-'}</td><td>{money(row.purchase_price)}</td><td>{money(row.selling_price)}</td><td><span className={Number(row.stock_qty) <= (lowStockLimit === '' ? 10 : Math.max(0, Number(lowStockLimit))) ? 'badge badge-danger' : ''}>{row.stock_qty}</span></td><td>{row.expiry_date || '-'}</td></tr>)}
                                 </tbody></table>
                             ) : activeTab === 'return' ? (
                                 <table className="table table-striped custom-table mb-0"><thead><tr><th>#</th><th>Date</th><th>Type</th><th>Return No</th><th>Invoice</th><th>Party</th><th>Medicine</th><th>Qty</th><th>Unit Price</th><th>Amount</th></tr></thead><tbody>
